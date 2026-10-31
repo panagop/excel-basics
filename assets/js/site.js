@@ -1,18 +1,18 @@
-// Excel Basics – shared navigation and the interactive mock spreadsheet.
-// To add a lesson: create lessons/NN-name.html and set `ready: true` below.
+// Excel για Πολιτικούς Μηχανικούς – κοινή πλοήγηση και διαδραστικό υπολογιστικό φύλλο.
+// Νέο μάθημα: δημιουργήστε lessons/NN-name.html και ορίστε `ready: true` παρακάτω.
 
 const LESSONS = [
-  { file: "01-first-steps.html", title: "First steps: the Excel window", ready: true },
-  { file: "02-formulas.html", title: "Formulas and arithmetic" },
-  { file: "03-references.html", title: "Relative and absolute references" },
-  { file: "04-functions.html", title: "Basic functions (SUM, AVERAGE, …)" },
-  { file: "05-formatting.html", title: "Formatting numbers and units" },
-  { file: "06-charts.html", title: "Charts (XY scatter)" },
-  { file: "07-if.html", title: "Logical tests: IF, AND, OR" },
-  { file: "08-lookup.html", title: "Lookup tables (XLOOKUP)" },
-  { file: "09-sort-filter.html", title: "Sorting, filtering and Tables" },
-  { file: "10-goal-seek.html", title: "Goal Seek: solving equations" },
-  { file: "11-matrices.html", title: "Matrices and linear systems" },
+  { file: "01-first-steps.html", title: "Πρώτα βήματα: το περιβάλλον του Excel", ready: true },
+  { file: "02-formulas.html", title: "Τύποι και αριθμητικές πράξεις", ready: true },
+  { file: "03-references.html", title: "Σχετικές και απόλυτες αναφορές" },
+  { file: "04-functions.html", title: "Βασικές συναρτήσεις (SUM, AVERAGE, …)" },
+  { file: "05-formatting.html", title: "Μορφοποίηση αριθμών και μονάδες" },
+  { file: "06-charts.html", title: "Διαγράμματα (διασπορά XY)" },
+  { file: "07-if.html", title: "Λογικοί έλεγχοι: IF, AND, OR" },
+  { file: "08-lookup.html", title: "Πίνακες αναζήτησης (XLOOKUP)" },
+  { file: "09-sort-filter.html", title: "Ταξινόμηση, φίλτρα και Πίνακες" },
+  { file: "10-goal-seek.html", title: "Αναζήτηση στόχου: επίλυση εξισώσεων" },
+  { file: "11-matrices.html", title: "Μητρώα και γραμμικά συστήματα" },
 ];
 
 (function buildLayout() {
@@ -24,16 +24,16 @@ const LESSONS = [
   const header = document.createElement("header");
   header.className = "site-header";
   header.innerHTML = `
-    <button class="menu-btn" aria-label="Show lessons">☰</button>
+    <button class="menu-btn" aria-label="Εμφάνιση μαθημάτων">☰</button>
     <span class="logo">X</span>
-    <a href="${root}index.html">Excel for Civil Engineers</a>`;
+    <a href="${root}index.html">Excel για Πολιτικούς Μηχανικούς</a>`;
   document.body.prepend(header);
 
   // Sidebar
   const items = LESSONS.map((l, i) => {
     const n = String(i + 1).padStart(2, "0");
     if (!l.ready) {
-      return `<li><span><span class="num">${n}</span>${l.title}<span class="soon">soon</span></span></li>`;
+      return `<li><span><span class="num">${n}</span>${l.title}<span class="soon">σύντομα</span></span></li>`;
     }
     const active = l.file === current ? ' class="active"' : "";
     return `<li><a href="${root}lessons/${l.file}"${active}><span class="num">${n}</span>${l.title}</a></li>`;
@@ -42,8 +42,8 @@ const LESSONS = [
   nav.className = "sidebar";
   nav.innerHTML = `
     <ol><li><a href="${root}index.html"${current === "index.html" || current === "" ? ' class="active"' : ""}>
-      <span class="num">⌂</span>Home</a></li></ol>
-    <h2>Lessons</h2><ol>${items}</ol>`;
+      <span class="num">⌂</span>Αρχική</a></li></ol>
+    <h2>Μαθήματα</h2><ol>${items}</ol>`;
   header.after(nav);
 
   header.querySelector(".menu-btn").addEventListener("click", () =>
@@ -59,9 +59,9 @@ const LESSONS = [
     const prev = LESSONS[idx - 1];
     const next = LESSONS[idx + 1];
     pager.innerHTML =
-      (prev ? `<a class="prev" href="${prev.file}"><small>← Previous</small>${prev.title}</a>`
-            : `<a class="prev" href="../index.html"><small>← Back</small>Home</a>`) +
-      (next && next.ready ? `<a class="next" href="${next.file}"><small>Next →</small>${next.title}</a>` : "");
+      (prev ? `<a class="prev" href="${prev.file}"><small>← Προηγούμενο</small>${prev.title}</a>`
+            : `<a class="prev" href="../index.html"><small>← Επιστροφή</small>Αρχική</a>`) +
+      (next && next.ready ? `<a class="next" href="${next.file}"><small>Επόμενο →</small>${next.title}</a>` : "");
   }
 
   // Home page lesson cards
@@ -70,15 +70,20 @@ const LESSONS = [
     cards.innerHTML = LESSONS.map((l, i) => {
       const n = String(i + 1).padStart(2, "0");
       return l.ready
-        ? `<a class="card" href="lessons/${l.file}"><span class="num">Lesson ${n}</span><h3>${l.title}</h3></a>`
-        : `<div class="card disabled"><span class="num">Lesson ${n}</span><h3>${l.title}</h3><p>Coming soon</p></div>`;
+        ? `<a class="card" href="lessons/${l.file}"><span class="num">Μάθημα ${n}</span><h3>${l.title}</h3></a>`
+        : `<div class="card disabled"><span class="num">Μάθημα ${n}</span><h3>${l.title}</h3><p>Σύντομα διαθέσιμο</p></div>`;
     }).join("");
   }
 })();
 
 // ---------- Mock spreadsheet ----------
 // Usage: <div class="xl" data-sheet='{"cols":4,"rows":5,"cells":{"A1":{"v":"Beam","hdr":1}, "C2":{"v":0.15,"f":"=A2*B2"}}}'></div>
-// Each cell: v = value shown, f = formula (optional), hdr = header style.
+// Each cell: v = value, f = formula (optional), d = decimals shown (optional), hdr = header style.
+// Numbers are shown with a decimal comma, as in Excel with Greek regional settings.
+const fmtNum = (v, d) =>
+  typeof v !== "number" ? v ?? ""
+    : v.toLocaleString("el-GR", { useGrouping: false, minimumFractionDigits: d ?? 0, maximumFractionDigits: d ?? 10 });
+
 document.querySelectorAll(".xl[data-sheet]").forEach((box) => {
   const sheet = JSON.parse(box.dataset.sheet);
   const letters = Array.from({ length: sheet.cols }, (_, i) => String.fromCharCode(65 + i));
@@ -95,7 +100,7 @@ document.querySelectorAll(".xl[data-sheet]").forEach((box) => {
         cell.hdr ? "hdr" : "",
         cell.f ? "formula" : "",
       ].join(" ").trim();
-      html += `<td data-ref="${c}${r}" class="${cls}">${cell.v ?? ""}</td>`;
+      html += `<td data-ref="${c}${r}" class="${cls}">${fmtNum(cell.v, cell.d)}</td>`;
     }
     html += "</tr>";
   }
@@ -114,7 +119,7 @@ document.querySelectorAll(".xl[data-sheet]").forEach((box) => {
     box.querySelector(`th[data-row="${row}"]`).classList.add("sel");
     const cell = sheet.cells[ref] || {};
     nameBox.value = ref;
-    formulaBar.textContent = cell.f ?? cell.v ?? "";
+    formulaBar.textContent = cell.f ?? fmtNum(cell.v);
   };
   box.addEventListener("click", (e) => {
     const td = e.target.closest("td[data-ref]");

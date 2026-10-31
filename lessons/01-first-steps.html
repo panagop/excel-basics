@@ -1,141 +1,152 @@
 <!doctype html>
-<html lang="en">
+<html lang="el">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>01 · First steps – Excel for Civil Engineers</title>
+  <title>01 · Πρώτα βήματα – Excel για Πολιτικούς Μηχανικούς</title>
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
 <main>
-  <h1>Lesson 1 · First steps: the Excel window</h1>
-  <p class="subtitle">Workbooks, sheets, cells – and your very first formula</p>
+  <h1>Μάθημα 1 · Πρώτα βήματα: το περιβάλλον του Excel</h1>
+  <p class="subtitle">Βιβλία εργασίας, φύλλα, κελιά – και ο πρώτος σας τύπος</p>
 
   <div class="goals">
-    <h3>In this lesson you will learn to</h3>
+    <h3>Σε αυτό το μάθημα θα μάθετε να</h3>
     <ul>
-      <li>recognise the main parts of the Excel window;</li>
-      <li>find a cell by its address (e.g. <code>B3</code>);</li>
-      <li>type text and numbers into cells and correct them;</li>
-      <li>write a first simple formula and save your work.</li>
+      <li>αναγνωρίζετε τα βασικά μέρη του παραθύρου του Excel·</li>
+      <li>εντοπίζετε ένα κελί από τη διεύθυνσή του (π.χ. <code>B3</code>)·</li>
+      <li>πληκτρολογείτε κείμενο και αριθμούς σε κελιά και να τα διορθώνετε·</li>
+      <li>γράφετε έναν πρώτο απλό τύπο και να αποθηκεύετε την εργασία σας.</li>
     </ul>
   </div>
 
-  <h2>1. Workbook and worksheets</h2>
+  <h2>1. Βιβλίο εργασίας και φύλλα εργασίας</h2>
   <p>
-    An Excel file (<code>.xlsx</code>) is called a <strong>workbook</strong>. A workbook contains one
-    or more <strong>worksheets</strong> (sheets), shown as tabs at the bottom of the window
-    (<em>Sheet1</em>, <em>Sheet2</em>, …). Each worksheet is a large grid of cells.
+    Ένα αρχείο Excel (<code>.xlsx</code>) ονομάζεται <strong>βιβλίο εργασίας</strong> (workbook).
+    Κάθε βιβλίο περιέχει ένα ή περισσότερα <strong>φύλλα εργασίας</strong> (worksheets), που
+    εμφανίζονται ως καρτέλες στο κάτω μέρος του παραθύρου (<em>Φύλλο1</em>, <em>Φύλλο2</em>, …).
+    Κάθε φύλλο είναι ένα μεγάλο πλέγμα από κελιά.
   </p>
 
-  <h2>2. The Excel window</h2>
+  <h2>2. Το παράθυρο του Excel</h2>
   <table class="plain">
-    <tr><th>Part</th><th>What it does</th></tr>
-    <tr><td><strong>Ribbon</strong></td><td>The tabs at the top (Home, Insert, Formulas, …) with all the commands.</td></tr>
-    <tr><td><strong>Name Box</strong></td><td>Top-left box; shows the address of the selected cell.</td></tr>
-    <tr><td><strong>Formula Bar</strong></td><td>Next to <em>fx</em>; shows what is really stored in the selected cell (a value or a formula).</td></tr>
-    <tr><td><strong>Column headings</strong></td><td>Letters A, B, C, … across the top.</td></tr>
-    <tr><td><strong>Row headings</strong></td><td>Numbers 1, 2, 3, … down the left side.</td></tr>
-    <tr><td><strong>Sheet tabs</strong></td><td>Bottom-left; switch between worksheets, or add one with <strong>+</strong>.</td></tr>
-    <tr><td><strong>Status bar</strong></td><td>Bottom edge; shows e.g. the sum and average of the selected cells.</td></tr>
+    <tr><th>Στοιχείο</th><th>Τι κάνει</th></tr>
+    <tr><td><strong>Κορδέλα</strong> (Ribbon)</td><td>Οι καρτέλες στο πάνω μέρος (Κεντρική, Εισαγωγή, Τύποι, …) με όλες τις εντολές.</td></tr>
+    <tr><td><strong>Πλαίσιο ονόματος</strong> (Name Box)</td><td>Πάνω αριστερά· δείχνει τη διεύθυνση του επιλεγμένου κελιού.</td></tr>
+    <tr><td><strong>Γραμμή τύπων</strong> (Formula Bar)</td><td>Δίπλα στο <em>fx</em>· δείχνει τι είναι πραγματικά αποθηκευμένο στο επιλεγμένο κελί (τιμή ή τύπος).</td></tr>
+    <tr><td><strong>Επικεφαλίδες στηλών</strong></td><td>Τα γράμματα A, B, C, … στο πάνω μέρος.</td></tr>
+    <tr><td><strong>Επικεφαλίδες γραμμών</strong></td><td>Οι αριθμοί 1, 2, 3, … στην αριστερή πλευρά.</td></tr>
+    <tr><td><strong>Καρτέλες φύλλων</strong> (Sheet tabs)</td><td>Κάτω αριστερά· εναλλαγή μεταξύ φύλλων ή προσθήκη νέου με το <strong>+</strong>.</td></tr>
+    <tr><td><strong>Γραμμή κατάστασης</strong> (Status bar)</td><td>Στο κάτω άκρο· δείχνει π.χ. το άθροισμα και τον μέσο όρο των επιλεγμένων κελιών.</td></tr>
   </table>
 
-  <h2>3. Cells and cell addresses</h2>
+  <h2>3. Κελιά και διευθύνσεις κελιών</h2>
   <p>
-    Every cell has an <strong>address</strong>: its column letter followed by its row number.
-    The cell in column <strong>C</strong>, row <strong>3</strong> is <code>C3</code>.
-    <strong>Click any cell below</strong> – the Name Box shows its address and the Formula Bar its content,
-    exactly as in Excel.
+    Κάθε κελί έχει μια <strong>διεύθυνση</strong> (αναφορά): το γράμμα της στήλης ακολουθούμενο από
+    τον αριθμό της γραμμής. Το κελί στη στήλη <strong>C</strong> και τη γραμμή <strong>3</strong> είναι
+    το <code>C3</code>. <strong>Κάντε κλικ σε οποιοδήποτε κελί παρακάτω</strong> – το Πλαίσιο ονόματος
+    δείχνει τη διεύθυνσή του και η Γραμμή τύπων το περιεχόμενό του, ακριβώς όπως στο Excel.
   </p>
 
   <div class="xl" data-sheet='{
     "cols": 6, "rows": 5, "start": "C3",
-    "caption": "Interactive example – click on the cells. Light-green cells contain formulas.",
+    "caption": "Διαδραστικό παράδειγμα – κάντε κλικ στα κελιά. Τα ανοιχτοπράσινα κελιά περιέχουν τύπους.",
     "cells": {
-      "A1": {"v": "Beam", "hdr": 1}, "B1": {"v": "b (m)", "hdr": 1}, "C1": {"v": "h (m)", "hdr": 1},
+      "A1": {"v": "Δοκός", "hdr": 1}, "B1": {"v": "b (m)", "hdr": 1}, "C1": {"v": "h (m)", "hdr": 1},
       "D1": {"v": "L (m)", "hdr": 1}, "E1": {"v": "A (m²)", "hdr": 1}, "F1": {"v": "V (m³)", "hdr": 1},
-      "A2": {"v": "B1"}, "B2": {"v": 0.25}, "C2": {"v": 0.50}, "D2": {"v": 5.00},
-      "E2": {"v": 0.125, "f": "=B2*C2"}, "F2": {"v": 0.625, "f": "=E2*D2"},
-      "A3": {"v": "B2"}, "B3": {"v": 0.30}, "C3": {"v": 0.60}, "D3": {"v": 6.00},
-      "E3": {"v": 0.18, "f": "=B3*C3"}, "F3": {"v": 1.08, "f": "=E3*D3"},
-      "A4": {"v": "B3"}, "B4": {"v": 0.25}, "C4": {"v": 0.45}, "D4": {"v": 4.50},
-      "E4": {"v": 0.1125, "f": "=B4*C4"}, "F4": {"v": 0.50625, "f": "=E4*D4"}
+      "A2": {"v": "Δ1"}, "B2": {"v": 0.25, "d": 2}, "C2": {"v": 0.50, "d": 2}, "D2": {"v": 5.00, "d": 2},
+      "E2": {"v": 0.125, "d": 4, "f": "=B2*C2"}, "F2": {"v": 0.625, "d": 4, "f": "=E2*D2"},
+      "A3": {"v": "Δ2"}, "B3": {"v": 0.30, "d": 2}, "C3": {"v": 0.60, "d": 2}, "D3": {"v": 6.00, "d": 2},
+      "E3": {"v": 0.18, "d": 4, "f": "=B3*C3"}, "F3": {"v": 1.08, "d": 4, "f": "=E3*D3"},
+      "A4": {"v": "Δ3"}, "B4": {"v": 0.25, "d": 2}, "C4": {"v": 0.45, "d": 2}, "D4": {"v": 4.50, "d": 2},
+      "E4": {"v": 0.1125, "d": 4, "f": "=B4*C4"}, "F4": {"v": 0.50625, "d": 4, "f": "=E4*D4"}
     }}'></div>
 
   <p>
-    A group of cells is called a <strong>range</strong> and is written with a colon:
-    <code>B2:D4</code> means all cells from B2 to D4 (3 columns × 3 rows = 9 cells).
+    Μια ομάδα κελιών ονομάζεται <strong>περιοχή</strong> (range) και γράφεται με άνω-κάτω τελεία:
+    <code>B2:D4</code> σημαίνει όλα τα κελιά από το B2 έως το D4 (3 στήλες × 3 γραμμές = 9 κελιά).
   </p>
 
-  <h2>4. Entering and correcting data</h2>
+  <h2>4. Εισαγωγή και διόρθωση δεδομένων</h2>
   <ol class="steps">
-    <li>Click a cell and simply type. Press <kbd>Enter</kbd> to move down, or <kbd>Tab</kbd> to move right.</li>
-    <li>To <strong>replace</strong> the content, select the cell and type again.</li>
-    <li>To <strong>edit</strong> the content, double-click the cell or press <kbd>F2</kbd>.</li>
-    <li>To <strong>delete</strong> the content, press <kbd>Delete</kbd>.</li>
-    <li>Made a mistake? <kbd>Ctrl</kbd>+<kbd>Z</kbd> undoes it.</li>
+    <li>Κάντε κλικ σε ένα κελί και απλώς πληκτρολογήστε. Πατήστε <kbd>Enter</kbd> για να πάτε κάτω ή <kbd>Tab</kbd> για να πάτε δεξιά.</li>
+    <li>Για να <strong>αντικαταστήσετε</strong> το περιεχόμενο, επιλέξτε το κελί και πληκτρολογήστε ξανά.</li>
+    <li>Για να <strong>διορθώσετε</strong> το περιεχόμενο, κάντε διπλό κλικ στο κελί ή πατήστε <kbd>F2</kbd>.</li>
+    <li>Για να <strong>διαγράψετε</strong> το περιεχόμενο, πατήστε <kbd>Delete</kbd>.</li>
+    <li>Κάνατε λάθος; Το <kbd>Ctrl</kbd>+<kbd>Z</kbd> το αναιρεί.</li>
   </ol>
   <p>
-    Excel recognises the type of what you type: <strong>text</strong> is aligned to the left,
-    <strong>numbers</strong> to the right. If a number appears on the left, Excel has read it as
-    text and cannot calculate with it.
+    Το Excel αναγνωρίζει το είδος των δεδομένων: το <strong>κείμενο</strong> στοιχίζεται αριστερά,
+    οι <strong>αριθμοί</strong> δεξιά. Αν ένας αριθμός εμφανίζεται αριστερά, το Excel τον έχει
+    διαβάσει ως κείμενο και δεν μπορεί να κάνει πράξεις με αυτόν.
   </p>
   <div class="note">
-    <strong>Decimal separator.</strong> With Greek regional settings Excel expects a
-    <strong>comma</strong> as decimal separator: type <code>0,25</code>, not <code>0.25</code>.
-    (With English settings it is the other way round.) A quick check: the number must be right-aligned.
+    <strong>Υποδιαστολή.</strong> Με ελληνικές τοπικές ρυθμίσεις των Windows το Excel περιμένει
+    <strong>κόμμα</strong> ως υποδιαστολή: πληκτρολογήστε <code>0,25</code> και όχι <code>0.25</code>.
+    (Με αγγλικές ρυθμίσεις ισχύει το αντίθετο.) Γρήγορος έλεγχος: ο αριθμός πρέπει να στοιχίζεται δεξιά.
+    Στο αριθμητικό πληκτρολόγιο, το πλήκτρο <kbd>Del</kbd>/<kbd>.</kbd> δίνει πάντα τη σωστή υποδιαστολή.
   </div>
   <div class="note">
-    <strong>Units.</strong> Write units in the column heading – e.g. <code>b (m)</code> – and type
-    only the number in the cells below. A cell containing <code>0.25 m</code> is text, not a number.
+    <strong>Μονάδες.</strong> Γράφετε τις μονάδες στην επικεφαλίδα της στήλης – π.χ. <code>b (m)</code> –
+    και στα κελιά από κάτω μόνο τον αριθμό. Ένα κελί που περιέχει <code>0,25 m</code> είναι κείμενο, όχι αριθμός.
   </div>
 
-  <h2>5. Your first formula</h2>
+  <h2>5. Ο πρώτος σας τύπος</h2>
   <p>
-    A <strong>formula</strong> always starts with an equals sign <code>=</code>. In the example above,
-    the cross-section area of beam B1 is calculated in cell <code>E2</code> with
+    Ένας <strong>τύπος</strong> (formula) ξεκινά πάντα με το σύμβολο ισότητας <code>=</code>.
+    Στο παραπάνω παράδειγμα, το εμβαδόν διατομής της δοκού Δ1 υπολογίζεται στο κελί <code>E2</code> με
   </p>
   <p style="text-align:center"><code style="font-size:1.1em">=B2*C2</code></p>
   <p>
-    i.e. <em>A = b · h</em>. We do not type the numbers 0.25 and 0.50 into the formula; we type the
-    <strong>addresses</strong> of the cells that contain them. If you later change the width in
-    <code>B2</code>, the area is recalculated automatically – this is the whole power of a spreadsheet.
+    δηλαδή <em>A = b · h</em>. Δεν γράφουμε μέσα στον τύπο τους αριθμούς 0,25 και 0,50· γράφουμε τις
+    <strong>διευθύνσεις</strong> των κελιών που τους περιέχουν. Αν αργότερα αλλάξετε το πλάτος στο
+    <code>B2</code>, το εμβαδόν υπολογίζεται ξανά αυτόματα – σε αυτό ακριβώς βρίσκεται η δύναμη του
+    υπολογιστικού φύλλου.
   </p>
-  <p>The basic arithmetic operators are:</p>
+  <p>Οι βασικοί αριθμητικοί τελεστές είναι:</p>
   <table class="plain">
-    <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
-    <tr><td><code>+</code></td><td>addition</td><td><code>=A1+B1</code></td></tr>
-    <tr><td><code>-</code></td><td>subtraction</td><td><code>=A1-B1</code></td></tr>
-    <tr><td><code>*</code></td><td>multiplication</td><td><code>=A1*B1</code></td></tr>
-    <tr><td><code>/</code></td><td>division</td><td><code>=A1/B1</code></td></tr>
-    <tr><td><code>^</code></td><td>power</td><td><code>=A1^2</code></td></tr>
+    <tr><th>Τελεστής</th><th>Πράξη</th><th>Παράδειγμα</th></tr>
+    <tr><td><code>+</code></td><td>πρόσθεση</td><td><code>=A1+B1</code></td></tr>
+    <tr><td><code>-</code></td><td>αφαίρεση</td><td><code>=A1-B1</code></td></tr>
+    <tr><td><code>*</code></td><td>πολλαπλασιασμός</td><td><code>=A1*B1</code></td></tr>
+    <tr><td><code>/</code></td><td>διαίρεση</td><td><code>=A1/B1</code></td></tr>
+    <tr><td><code>^</code></td><td>δύναμη</td><td><code>=A1^2</code></td></tr>
   </table>
   <p>
-    <strong>Tip:</strong> instead of typing <code>B2</code>, type <code>=</code> and then
-    <em>click</em> on cell B2 with the mouse – Excel inserts the address for you.
+    <strong>Συμβουλή:</strong> αντί να πληκτρολογήσετε <code>B2</code>, γράψτε <code>=</code> και μετά
+    κάντε <em>κλικ</em> στο κελί B2 με το ποντίκι – το Excel εισάγει τη διεύθυνση για εσάς.
   </p>
+  <div class="note">
+    <strong>Προσοχή στο πληκτρολόγιο!</strong> Οι διευθύνσεις κελιών γράφονται με
+    <strong>λατινικούς</strong> χαρακτήρες. Το ελληνικό «Β» μοιάζει με το λατινικό «B», αλλά για το
+    Excel είναι άλλος χαρακτήρας και ο τύπος <code>=Β2*C2</code> (με ελληνικό Β) βγάζει σφάλμα.
+    Πριν γράψετε τύπο, αλλάξτε σε αγγλικό πληκτρολόγιο με <kbd>Alt</kbd>+<kbd>Shift</kbd>
+    (ή <kbd>Win</kbd>+<kbd>Space</kbd>).
+  </div>
 
-  <h2>6. Try it yourself</h2>
+  <h2>6. Δοκιμάστε μόνοι σας</h2>
   <p>
-    <a class="download" href="../files/01-first-steps.xlsx" download>⬇ Download 01-first-steps.xlsx</a>
+    <a class="download" href="../files/01-first-steps.xlsx" download>⬇ Λήψη 01-first-steps.xlsx</a>
   </p>
   <ol class="steps">
-    <li>Open the file. The sheet <strong>Example</strong> contains the table above. Click on the cells
-      of columns E and F and look at the Formula Bar.</li>
-    <li>Change the height of beam B1 (cell <code>C2</code>) to 0.60 and watch the area and volume change.</li>
-    <li>Go to the sheet <strong>Exercise</strong>. It contains concrete columns with dimensions
-      b × h and height H. Fill in the yellow cells with formulas for the cross-section area and the volume.</li>
-    <li>Save the file with <kbd>Ctrl</kbd>+<kbd>S</kbd>.</li>
+    <li>Ανοίξτε το αρχείο. Το φύλλο <strong>Παράδειγμα</strong> περιέχει τον παραπάνω πίνακα. Κάντε κλικ
+      στα κελιά των στηλών E και F και παρατηρήστε τη Γραμμή τύπων.</li>
+    <li>Αλλάξτε το ύψος της δοκού Δ1 (κελί <code>C2</code>) σε 0,60 και δείτε το εμβαδόν και τον όγκο να αλλάζουν.</li>
+    <li>Πηγαίνετε στο φύλλο <strong>Άσκηση</strong>. Περιέχει υποστυλώματα από σκυρόδεμα με διαστάσεις
+      b × h και ύψος H. Συμπληρώστε τα κίτρινα κελιά με τύπους για το εμβαδόν διατομής και τον όγκο.</li>
+    <li>Αποθηκεύστε το αρχείο με <kbd>Ctrl</kbd>+<kbd>S</kbd>.</li>
   </ol>
 
-  <h2>Summary</h2>
+  <h2>Σύνοψη</h2>
   <table class="plain">
-    <tr><th>Shortcut</th><th>Action</th></tr>
-    <tr><td><kbd>Enter</kbd> / <kbd>Tab</kbd></td><td>confirm and move down / right</td></tr>
-    <tr><td><kbd>F2</kbd></td><td>edit the selected cell</td></tr>
-    <tr><td><kbd>Delete</kbd></td><td>clear the cell</td></tr>
-    <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd></td><td>undo</td></tr>
-    <tr><td><kbd>Ctrl</kbd>+<kbd>S</kbd></td><td>save</td></tr>
+    <tr><th>Συντόμευση</th><th>Ενέργεια</th></tr>
+    <tr><td><kbd>Enter</kbd> / <kbd>Tab</kbd></td><td>επιβεβαίωση και μετακίνηση κάτω / δεξιά</td></tr>
+    <tr><td><kbd>F2</kbd></td><td>επεξεργασία του επιλεγμένου κελιού</td></tr>
+    <tr><td><kbd>Delete</kbd></td><td>διαγραφή περιεχομένου</td></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd></td><td>αναίρεση</td></tr>
+    <tr><td><kbd>Ctrl</kbd>+<kbd>S</kbd></td><td>αποθήκευση</td></tr>
+    <tr><td><kbd>Alt</kbd>+<kbd>Shift</kbd></td><td>αλλαγή γλώσσας πληκτρολογίου</td></tr>
   </table>
 
   <div class="pager"></div>

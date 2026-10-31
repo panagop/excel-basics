@@ -1,4 +1,4 @@
-/* Excel Basics – shared styles */
+/* Excel για Πολιτικούς Μηχανικούς – κοινή μορφοποίηση */
 :root {
   --green: #217346;
   --green-dark: #185c37;
@@ -10,7 +10,7 @@
   --bg-soft: #f6f8fa;
   --note: #fff8e1;
   --note-border: #f2c94c;
-  --sidebar-w: 270px;
+  --sidebar-w: 300px;
   --header-h: 56px;
 }
 
