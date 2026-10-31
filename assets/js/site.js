@@ -4,7 +4,7 @@
 const LESSONS = [
   { file: "01-first-steps.html", title: "Πρώτα βήματα: το περιβάλλον του Excel", ready: true },
   { file: "02-formulas.html", title: "Τύποι και αριθμητικές πράξεις", ready: true },
-  { file: "03-references.html", title: "Σχετικές και απόλυτες αναφορές" },
+  { file: "03-references.html", title: "Σχετικές και απόλυτες αναφορές", ready: true },
   { file: "04-functions.html", title: "Βασικές συναρτήσεις (SUM, AVERAGE, …)" },
   { file: "05-formatting.html", title: "Μορφοποίηση αριθμών και μονάδες" },
   { file: "06-charts.html", title: "Διαγράμματα (διασπορά XY)" },
