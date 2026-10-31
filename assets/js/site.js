@@ -10,7 +10,7 @@ const LESSONS = [
   { file: "05-formatting.html", title: "Μορφοποίηση αριθμών και μονάδες", ready: true },
   { file: "06-charts.html", title: "Διαγράμματα (διασπορά XY)", ready: true },
   { file: "07-if.html", title: "Λογικοί έλεγχοι: IF, AND, OR", ready: true },
-  { file: "08-lookup.html", title: "Πίνακες αναζήτησης (XLOOKUP)" },
+  { file: "08-lookup.html", title: "Πίνακες αναζήτησης (XLOOKUP)", ready: true },
   { file: "09-sort-filter.html", title: "Ταξινόμηση, φίλτρα και Πίνακες" },
   { file: "10-goal-seek.html", title: "Αναζήτηση στόχου: επίλυση εξισώσεων" },
   { file: "11-matrices.html", title: "Μητρώα και γραμμικά συστήματα" },
