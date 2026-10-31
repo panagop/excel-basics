@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 · Μακροεντολές – Excel για Πολιτικούς Μηχανικούς</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .code { position: relative; margin: 1em 0; }
+    .code pre { background: #1e1e1e; color: #d4d4d4; padding: 14px 16px; border-radius: 6px; overflow-x: auto;
+                font: 14px/1.5 Consolas, "Cascadia Mono", monospace; margin: 0; }
+    .code .c { color: #6a9955; } .code .k { color: #569cd6; } .code .s { color: #ce9178; }
+    .code button { position: absolute; top: 8px; right: 8px; font: 12px "Segoe UI", sans-serif; padding: 3px 10px;
+                   border: 1px solid #555; border-radius: 4px; background: #333; color: #eee; cursor: pointer; }
+    .code button:hover { background: #217346; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Μάθημα 13 · Μακροεντολές: σύντομη εισαγωγή</h1>
+  <p class="subtitle">Εγγραφή ενεργειών, δικές σας συναρτήσεις και αυτοματοποίηση της Αναζήτησης στόχου</p>
+
+  <div class="goals">
+    <h3>Σε αυτό το μάθημα θα μάθετε να</h3>
+    <ul>
+      <li>καταγράφετε και να εκτελείτε μια μακροεντολή·</li>
+      <li>βλέπετε και να διορθώνετε τον κώδικα VBA που δημιουργείται·</li>
+      <li>γράφετε δικές σας συναρτήσεις, π.χ. <code>=BAR_AREA(4;16)</code>·</li>
+      <li>αυτοματοποιείτε μια επαναλαμβανόμενη εργασία με έναν βρόχο·</li>
+      <li>αναγνωρίζετε τους κινδύνους ασφαλείας των μακροεντολών.</li>
+    </ul>
+  </div>
+  <div class="note">
+    Το μάθημα είναι μια <strong>πρώτη γνωριμία</strong>: ο στόχος είναι να ξέρετε τι μπορούν να κάνουν οι
+    μακροεντολές και πώς ξεκινάτε – όχι να μάθετε προγραμματισμό. Αυτό θα γίνει σε μαθήματα προγραμματισμού.
+  </div>
+
+  <h2>1. Τι είναι μια μακροεντολή</h2>
+  <p>
+    Μια <strong>μακροεντολή</strong> (macro) είναι μια σειρά ενεργειών που το Excel εκτελεί αυτόματα. Γράφεται
+    στη γλώσσα <strong>VBA</strong> (Visual Basic for Applications), αλλά δεν χρειάζεται να ξέρετε VBA για να
+    φτιάξετε την πρώτη σας: το Excel μπορεί να <em>καταγράψει</em> ό,τι κάνετε με το ποντίκι και το πληκτρολόγιο
+    και να το μετατρέψει σε κώδικα. Χρήσιμες για:
+  </p>
+  <ul>
+    <li>εργασίες που επαναλαμβάνετε συχνά (μορφοποίηση πινάκων, εκτύπωση, εξαγωγή)·</li>
+    <li>δικές σας συναρτήσεις για τύπους που χρησιμοποιείτε συνέχεια·</li>
+    <li>διαδικασίες που οι τύποι δεν κάνουν μόνοι τους, π.χ. να ξανατρέχει η Αναζήτηση στόχου.</li>
+  </ul>
+
+  <h2>2. Η καρτέλα Προγραμματιστής</h2>
+  <p>
+    Τα εργαλεία βρίσκονται στην καρτέλα <em>Προγραμματιστής</em> (Developer), που είναι κρυφή αρχικά:
+    <em>Αρχείο → Επιλογές → Προσαρμογή κορδέλας</em> (Customize Ribbon) → τσεκάρετε <em>Προγραμματιστής</em> στη
+    δεξιά λίστα → OK.
+  </p>
+
+  <h2>3. Εγγραφή μακροεντολής: μορφοποίηση πίνακα</h2>
+  <p>
+    Στο φύλλο <strong>Μορφοποίηση</strong> του αρχείου υπάρχουν δύο αμορφοποίητοι πίνακες αποτελεσμάτων.
+    Θα μορφοποιήσουμε τον πρώτο <em>καταγράφοντας</em> τις ενέργειές μας, και μετά θα εφαρμόσουμε την ίδια
+    μορφοποίηση στον δεύτερο με ένα κλικ.
+  </p>
+  <ol class="steps">
+    <li>Επιλέξτε τον πρώτο πίνακα (<code>A5:E9</code>).</li>
+    <li><em>Προγραμματιστής → Εγγραφή μακροεντολής</em> (Record Macro). Όνομα: <code>FormatTable</code> (χωρίς κενά),
+      αποθήκευση σε <em>Αυτό το βιβλίο εργασίας</em>. OK – από εδώ και πέρα ό,τι κάνετε καταγράφεται.</li>
+    <li>Δώστε περιγράμματα και μορφή αριθμού <code>0,00</code> σε όλη την επιλογή· μετά επιλέξτε την πρώτη γραμμή
+      και κάντε τη έντονη, με πράσινο γέμισμα και λευκά γράμματα.</li>
+    <li><em>Προγραμματιστής → Διακοπή εγγραφής</em> (Stop Recording).</li>
+    <li>Επιλέξτε τον δεύτερο πίνακα (<code>A12:E15</code>) και <em>Προγραμματιστής → Μακροεντολές</em>
+      (<kbd>Alt</kbd>+<kbd>F8</kbd>) → <code>FormatTable</code> → <em>Εκτέλεση</em>.</li>
+  </ol>
+  <div class="note">
+    <strong>Απόλυτες ή σχετικές θέσεις;</strong> Αν κατά την εγγραφή κάνετε κλικ σε συγκεκριμένα κελιά, ο
+    καταγραφέας γράφει απόλυτες διευθύνσεις (<code>Range("A5:E5").Select</code>) και η μακροεντολή θα
+    μορφοποιεί <em>πάντα</em> τα ίδια κελιά. Για μακροεντολή που δουλεύει «εκεί που βρίσκομαι», ενεργοποιήστε
+    <em>Χρήση σχετικών αναφορών</em> (Use Relative References) πριν την εγγραφή – θυμίζει το Μάθημα 3!
+  </div>
+
+  <h2>4. Ο κώδικας VBA</h2>
+  <p>
+    <kbd>Alt</kbd>+<kbd>F11</kbd> ανοίγει τον <strong>επεξεργαστή VBA</strong>. Η καταγεγραμμένη μακροεντολή
+    βρίσκεται στο <em>Modules → Module1</em>. Ο καταγραφέας γράφει πολύ περισσότερο κώδικα απ’ όσο χρειάζεται·
+    μια «καθαρή» εκδοχή της ίδιας μακροεντολής, που δουλεύει σε <em>οποιαδήποτε</em> επιλογή:
+  </p>
+  <div class="code"><button>Αντιγραφή</button><pre><span class="k">Sub</span> FormatTable()
+<span class="c">' Μορφοποιεί την επιλεγμένη περιοχή: περιγράμματα, 2 δεκαδικά, επικεφαλίδα</span>
+    <span class="k">With</span> Selection
+        .Borders.LineStyle = xlContinuous
+        .NumberFormat = <span class="s">"0.00"</span>
+        .Columns.AutoFit
+    <span class="k">End With</span>
+    <span class="k">With</span> Selection.Rows(1)
+        .Font.Bold = <span class="k">True</span>
+        .Font.Color = vbWhite
+        .Interior.Color = RGB(33, 115, 70)
+        .HorizontalAlignment = xlCenter
+    <span class="k">End With</span>
+<span class="k">End Sub</span></pre></div>
+  <p>
+    Ακόμη κι αν δεν ξέρετε VBA, ο κώδικας διαβάζεται: «για την επιλογή (<code>Selection</code>), βάλε περιγράμματα,
+    μορφή 0.00, αυτόματο πλάτος στηλών· για την πρώτη γραμμή, έντονα λευκά γράμματα σε πράσινο φόντο».
+    Οι γραμμές με <code>'</code> είναι σχόλια.
+  </p>
+  <div class="note">
+    <strong>Η VBA είναι «αγγλική».</strong> Μέσα στον κώδικα η υποδιαστολή είναι πάντα <strong>τελεία</strong>
+    και οι κωδικοί μορφής γράφονται με τελεία (<code>"0.00"</code>), όποιες κι αν είναι οι τοπικές ρυθμίσεις του
+    υπολογιστή (<a href="../guides/regional-settings.html">οδηγός τοπικών ρυθμίσεων</a>).
+  </div>
+
+  <h3>Κουμπί για τη μακροεντολή</h3>
+  <p>
+    <em>Προγραμματιστής → Εισαγωγή → Κουμπί (στοιχείο ελέγχου φόρμας)</em> (Insert → Button, Form Control): σχεδιάστε
+    το κουμπί στο φύλλο, και στο παράθυρο που ανοίγει διαλέξτε τη μακροεντολή (<em>Αντιστοίχιση μακροεντολής</em>,
+    Assign Macro). Δεξί κλικ στο κουμπί για να αλλάξετε το κείμενό του.
+  </p>
+
+  <h2>5. Δικές σας συναρτήσεις</h2>
+  <p>
+    Η VBA επιτρέπει να γράψετε <strong>συναρτήσεις</strong> που χρησιμοποιούνται στα κελιά ακριβώς όπως οι
+    ενσωματωμένες (UDF – User Defined Functions). Στον επεξεργαστή VBA: <em>Insert → Module</em> και επικολλήστε:
+  </p>
+  <div class="code"><button>Αντιγραφή</button><pre><span class="k">Function</span> BAR_AREA(n <span class="k">As Double</span>, phi <span class="k">As Double</span>) <span class="k">As Double</span>
+<span class="c">' Εμβαδόν n ράβδων διαμέτρου phi (mm), σε cm²</span>
+    BAR_AREA = n * WorksheetFunction.Pi() * phi ^ 2 / 4 / 100
+<span class="k">End Function</span>
+
+<span class="k">Function</span> FCD_DESIGN(fck <span class="k">As Double</span>, <span class="k">Optional</span> acc <span class="k">As Double</span> = 0.85) <span class="k">As Double</span>
+<span class="c">' Αντοχή σχεδιασμού σκυροδέματος f_cd = acc·fck/γc, με γc = 1.5 (MPa)</span>
+    FCD_DESIGN = acc * fck / 1.5
+<span class="k">End Function</span></pre></div>
+  <p>Τώρα, σε οποιοδήποτε κελί του βιβλίου εργασίας:</p>
+  <table class="plain">
+    <tr><th>Τύπος</th><th>Αποτέλεσμα</th></tr>
+    <tr><td><code>=BAR_AREA(4;16)</code></td><td>8,04 (cm², 4Φ16)</td></tr>
+    <tr><td><code>=FCD_DESIGN(25)</code></td><td>14,17 (MPa, με α<sub>cc</sub> = 0,85 ως προεπιλογή)</td></tr>
+    <tr><td><code>=FCD_DESIGN(25;1)</code></td><td>16,67 (MPa, με α<sub>cc</sub> = 1,0)</td></tr>
+  </table>
+  <p>
+    Παρατηρήστε τη διαφορά: στον κώδικα VBA τα ορίσματα χωρίζονται με <code>,</code> και η υποδιαστολή είναι
+    <code>.</code>· στο κελί, με ελληνικές ρυθμίσεις, γράφετε <code>;</code> και <code>,</code> όπως σε κάθε
+    συνάρτηση. Ένας τύπος που χρησιμοποιείτε συχνά, γραμμένος μία φορά ως συνάρτηση, μειώνει τα λάθη και κάνει
+    τα φύλλα πιο ευανάγνωστα – όπως τα ονόματα κελιών του Μαθήματος 3.
+  </p>
+
+  <h2>6. Βρόχος: Αναζήτηση στόχου για πολλές διατομές</h2>
+  <p>
+    Στο Μάθημα 10 είδαμε ότι η Αναζήτηση στόχου <strong>δεν ενημερώνεται</strong> όταν αλλάζουν τα δεδομένα, και
+    ότι τρέχει για ένα κελί τη φορά. Το φύλλο <strong>Αναζήτηση</strong> του αρχείου έχει τρεις διατομές σε
+    στήλες C, D, E (4Φ20, 6Φ20, 6Φ25), με το x στη γραμμή 17 και την ισορροπία F<sub>c</sub> − F<sub>s</sub> στη
+    γραμμή 23. Μια μακροεντολή με <strong>βρόχο</strong> τις λύνει όλες:
+  </p>
+  <div class="code"><button>Αντιγραφή</button><pre><span class="k">Sub</span> SolveAll()
+<span class="c">' Για τις στήλες C (3) έως E (5): F_c - F_s (γραμμή 23) = 0, αλλάζοντας το x (γραμμή 17)</span>
+    <span class="k">Dim</span> c <span class="k">As Integer</span>
+    <span class="k">For</span> c = 3 <span class="k">To</span> 5
+        Cells(17, c).Value = 0.1              <span class="c">' αρχική τιμή του x</span>
+        Cells(23, c).GoalSeek Goal:=0, ChangingCell:=Cells(17, c)
+    <span class="k">Next</span> c
+<span class="k">End Sub</span></pre></div>
+  <p>
+    Το <code>Cells(γραμμή, στήλη)</code> δείχνει ένα κελί με αριθμούς αντί για γράμματα, ώστε ο βρόχος
+    <code>For c = 3 To 5</code> να περνά από τις στήλες C, D, E. Η γραμμή <code>GoalSeek</code> κάνει ακριβώς ό,τι
+    και το παράθυρο της Αναζήτησης στόχου. Βάλτε την σε ένα κουμπί «Επίλυση» στο φύλλο: αλλάζετε ένα δεδομένο,
+    πατάτε το κουμπί, και όλες οι διατομές λύνονται ξανά. Αναμενόμενα (α<sub>cc</sub> = 0,85): x = 0,1607 / 0,2410 /
+    0,3491 m, M<sub>Rd</sub> = 265,4 / 371,7 / 487,0 kNm – και ο χάλυβας της τρίτης διατομής δεν διαρρέει.
+  </p>
+
+  <h2>7. Αποθήκευση και ασφάλεια</h2>
+  <ul>
+    <li><strong>Αποθήκευση:</strong> ένα αρχείο με μακροεντολές πρέπει να αποθηκευτεί ως <em>Βιβλίο εργασίας
+      του Excel με δυνατότητα μακροεντολών</em> (<code>.xlsm</code>). Αν το αποθηκεύσετε ως <code>.xlsx</code>, ο κώδικας χάνεται.</li>
+    <li><strong>Κίνδυνος:</strong> μια μακροεντολή μπορεί να κάνει σχεδόν οτιδήποτε στον υπολογιστή σας –
+      και μέσω αρχείων με μακροεντολές διαδίδεται κακόβουλο λογισμικό. Γι’ αυτό το Excel τις <strong>απενεργοποιεί</strong>
+      από προεπιλογή και εμφανίζει μια κίτρινη γραμμή <em>Ενεργοποίηση περιεχομένου</em> (Enable Content).</li>
+    <li><strong>Αρχεία από το διαδίκτυο ή από email:</strong> οι μακροεντολές τους μπλοκάρονται εντελώς, με κόκκινη
+      γραμμή προειδοποίησης. Αν εμπιστεύεστε <em>απόλυτα</em> την πηγή: δεξί κλικ στο αρχείο → <em>Ιδιότητες</em> →
+      τσεκ <em>Κατάργηση αποκλεισμού</em> (Unblock).</li>
+    <li><strong>Κανόνας:</strong> ποτέ μην ενεργοποιείτε μακροεντολές σε αρχείο που δεν ξέρετε από πού προέρχεται.</li>
+  </ul>
+  <p>
+    Γι’ αυτό το αρχείο του μαθήματος είναι απλό <code>.xlsx</code> χωρίς κώδικα: τον κώδικα τον αντιγράφετε
+    εσείς από αυτή τη σελίδα, άρα ξέρετε ακριβώς τι εκτελείται.
+  </p>
+
+  <h2>8. Και μετά;</h2>
+  <p>
+    Η VBA είναι μια ολοκληρωμένη γλώσσα προγραμματισμού, με μεταβλητές, συνθήκες, βρόχους και φόρμες διαλόγου.
+    Πολλά «εργαλεία» μηχανικών σε Excel (π.χ. φύλλα διαστασιολόγησης) είναι γραμμένα έτσι. Για πιο σύνθετους
+    υπολογισμούς, οι μηχανικοί στρέφονται όλο και περισσότερο στην <strong>Python</strong> – που σε ορισμένες
+    εκδόσεις του Microsoft 365 μπορεί να γραφτεί και απευθείας σε κελιά του Excel. Οι έννοιες που μάθατε εδώ
+    (κελιά, αναφορές, συναρτήσεις, βρόχοι) είναι ίδιες σε όλα.
+  </p>
+
+  <h2>9. Δοκιμάστε μόνοι σας</h2>
+  <p>
+    <a class="download" href="../files/13-macros.xlsx" download>⬇ Λήψη 13-macros.xlsx</a>
+  </p>
+  <ol class="steps">
+    <li>Ενεργοποιήστε την καρτέλα <em>Προγραμματιστής</em>.</li>
+    <li>Φύλλο <strong>Μορφοποίηση</strong>: καταγράψτε τη μακροεντολή <code>FormatTable</code> στον πρώτο πίνακα και
+      εκτελέστε τη στον δεύτερο. Δείτε τον κώδικα με <kbd>Alt</kbd>+<kbd>F11</kbd>.</li>
+    <li>Φύλλο <strong>Συναρτήσεις</strong>: προσθέστε τις <code>BAR_AREA</code> και <code>FCD_DESIGN</code> σε ένα Module
+      και συμπληρώστε τα κίτρινα κελιά.</li>
+    <li>Φύλλο <strong>Αναζήτηση</strong>: προσθέστε τη <code>SolveAll</code>, φτιάξτε ένα κουμπί «Επίλυση» και
+      πατήστε το. Αλλάξτε το f<sub>ck</sub> σε 30 και ξαναπατήστε.</li>
+    <li>Αποθηκεύστε ως <code>.xlsm</code>, κλείστε και ανοίξτε ξανά το αρχείο: τι εμφανίζεται;</li>
+  </ol>
+
+  <h2>Σύνοψη</h2>
+  <table class="plain">
+    <tr><th>Θέλω…</th><th>Πώς</th></tr>
+    <tr><td>να φαίνεται η καρτέλα Προγραμματιστής</td><td><em>Αρχείο → Επιλογές → Προσαρμογή κορδέλας</em></td></tr>
+    <tr><td>να καταγράψω ενέργειες</td><td><em>Εγγραφή μακροεντολής</em> … <em>Διακοπή εγγραφής</em></td></tr>
+    <tr><td>να εκτελέσω μια μακροεντολή</td><td><kbd>Alt</kbd>+<kbd>F8</kbd>, ή κουμπί στο φύλλο</td></tr>
+    <tr><td>να δω / γράψω κώδικα</td><td><kbd>Alt</kbd>+<kbd>F11</kbd> → Insert → Module</td></tr>
+    <tr><td>δική μου συνάρτηση</td><td><code>Function … End Function</code>, χρήση <code>=ΟΝΟΜΑ(…)</code> στο κελί</td></tr>
+    <tr><td>να κρατήσω τον κώδικα</td><td>αποθήκευση ως <code>.xlsm</code></td></tr>
+  </table>
+
+  <div class="note" style="margin-top:2em">
+    <strong>Τέλος της σειράς.</strong> Με αυτά τα μαθήματα έχετε τα εργαλεία για τα περισσότερα φύλλα
+    υπολογισμών που θα χρειαστείτε στις σπουδές σας. Ο καλύτερος τρόπος να τα εμπεδώσετε: την επόμενη φορά που
+    θα λύσετε μια άσκηση Στατικής ή Αντοχής με το χέρι, ελέγξτε τη λύση σας και με ένα φύλλο Excel.
+  </div>
+
+  <div class="pager"></div>
+</main>
+<script src="../assets/js/site.js"></script>
+<script>
+  // "Copy" buttons for the VBA code blocks.
+  document.querySelectorAll(".code button").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const text = btn.nextElementSibling.innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.textContent = "Αντιγράφηκε ✓";
+      } catch {
+        btn.textContent = "Επιλέξτε και Ctrl+C";
+      }
+      setTimeout(() => (btn.textContent = "Αντιγραφή"), 2000);
+    });
+  });
+</script>
+</body>
+</html>

@@ -14,6 +14,8 @@ const LESSONS = [
   { file: "09-sort-filter.html", title: "Ταξινόμηση, φίλτρα και Πίνακες", ready: true },
   { file: "10-goal-seek.html", title: "Αναζήτηση στόχου: επίλυση εξισώσεων", ready: true },
   { file: "11-matrices.html", title: "Μητρώα και γραμμικά συστήματα", ready: true },
+  { file: "12-more-charts.html", title: "Στήλες, ράβδοι, πίτα, ιστόγραμμα", ready: true },
+  { file: "13-macros.html", title: "Μακροεντολές: σύντομη εισαγωγή", ready: true },
 ];
 
 const GUIDES = [
@@ -152,6 +154,7 @@ document.querySelectorAll(".xl[data-sheet]").forEach((box) => {
 // Optional: xMin/xMax/yMin/yMax, height, categorical:true (x values as equally spaced categories,
 // like an Excel Line chart), legend:true, legendLeft:true (legend top-left instead of top-right).
 const CHART_COLORS = ["#4472C4", "#ED7D31", "#70AD47", "#7F7F7F"];
+const OFFICE_COLORS = ["#4472C4", "#ED7D31", "#A5A5A5", "#FFC000", "#5B9BD5", "#70AD47"];
 
 function niceTicks(lo, hi, target = 5) {
   if (hi === lo) hi = lo + 1;
@@ -166,6 +169,8 @@ function niceTicks(lo, hi, target = 5) {
 
 document.querySelectorAll(".xychart[data-chart]").forEach((box) => {
   const spec = JSON.parse(box.dataset.chart);
+  if (spec.type === "pie") return drawPie(box, spec);
+  if (spec.type === "column" || spec.type === "bar") return drawBars(box, spec);
   const W = 600, H = spec.height || 320;
   const m = { l: 62, r: 18, t: spec.title ? 36 : 14, b: 50 };
   const series = spec.series.map((s) => (spec.categorical ? { ...s, cat: s.x, x: s.x.map((_, i) => i) } : s));
@@ -217,3 +222,110 @@ document.querySelectorAll(".xychart[data-chart]").forEach((box) => {
   }
   box.innerHTML = svg + "</svg>" + (spec.caption ? `<div class="xl-caption">${spec.caption}</div>` : "");
 });
+
+// ---------- Column / bar / combo and pie charts (SVG) ----------
+// Column/bar: {"type":"column"|"bar","categories":[…],"series":[{"name","values":[…],"line":true?}],
+//   "stacked":true?, "gap":0.4, "labels":true?, "thousands":true? (1.234 grouping), "yTitle",
+//   "y2Title" (axis of line series), "xTitle"}
+// Pie: {"type":"pie","categories":[…],"values":[…]}
+
+function legendRow(series, x, y) {
+  let svg = "";
+  series.forEach((s, k) => {
+    const col = s.color || OFFICE_COLORS[k % OFFICE_COLORS.length];
+    svg += s.line
+      ? `<line x1="${x}" x2="${x + 18}" y1="${y - 4}" y2="${y - 4}" stroke="${col}" stroke-width="2.5"/>`
+      : `<rect x="${x + 3}" y="${y - 10}" width="12" height="12" fill="${col}"/>`;
+    svg += `<text x="${x + 22}" y="${y}">${s.name}</text>`;
+    x += 34 + s.name.length * 6.5;
+  });
+  return svg;
+}
+
+function drawBars(box, spec) {
+  const W = 600, H = spec.height || 320, horiz = spec.type === "bar";
+  const cats = spec.categories, n = cats.length;
+  const bars = spec.series.filter((s) => !s.line), lines = spec.series.filter((s) => s.line);
+  const showLegend = spec.series.length > 1;
+  const fmtV = (v) => (spec.thousands ? v.toLocaleString("el-GR") : fmtNum(v));
+  const m = { l: horiz ? spec.labelWidth || 160 : 62, r: lines.length ? 62 : horiz && spec.labels ? 70 : 22,
+              t: (spec.title ? 36 : 14) + (showLegend ? 22 : 0), b: 50 };
+  const tot = cats.map((_, i) => (spec.stacked ? bars.reduce((s, b) => s + b.values[i], 0)
+                                               : Math.max(...bars.map((b) => b.values[i]))));
+  const vt = niceTicks(0, Math.max(...tot)), vmax = vt[vt.length - 1];
+  const gap = spec.gap ?? 0.4;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" font-family="Calibri, Segoe UI, Arial" font-size="12">`;
+  if (spec.title) svg += `<text x="${W / 2}" y="22" text-anchor="middle" font-size="15" font-weight="600">${spec.title}</text>`;
+  if (showLegend) svg += legendRow(spec.series, m.l, (spec.title ? 36 : 14) + 12);
+  const x0 = m.l, x1 = W - m.r, y0 = m.t, y1 = H - m.b;
+
+  if (!horiz) {
+    const vy = (v) => y1 - (v / vmax) * (y1 - y0), band = (x1 - x0) / n, gw = band * (1 - gap);
+    for (const v of vt) {
+      svg += `<line x1="${x0}" x2="${x1}" y1="${vy(v)}" y2="${vy(v)}" stroke="#e3e3e3"/>`;
+      svg += `<text x="${x0 - 6}" y="${vy(v) + 4}" text-anchor="end" fill="#555">${fmtNum(v)}</text>`;
+    }
+    cats.forEach((c, i) => {
+      const cx = x0 + band * (i + 0.5);
+      svg += `<text x="${cx}" y="${y1 + 16}" text-anchor="middle" fill="#555">${c}</text>`;
+      let acc = 0;
+      bars.forEach((s, k) => {
+        const col = s.color || OFFICE_COLORS[spec.series.indexOf(s) % OFFICE_COLORS.length];
+        const v = s.values[i], w = spec.stacked ? gw : gw / bars.length;
+        const bx = spec.stacked ? cx - gw / 2 : cx - gw / 2 + k * w;
+        const top = vy(spec.stacked ? acc + v : v), bottom = vy(spec.stacked ? acc : 0);
+        svg += `<rect x="${bx.toFixed(1)}" y="${top.toFixed(1)}" width="${w.toFixed(1)}" height="${(bottom - top).toFixed(1)}" fill="${col}"/>`;
+        if (spec.labels) svg += `<text x="${bx + w / 2}" y="${top - 4}" text-anchor="middle" fill="#333">${fmtNum(v)}</text>`;
+        acc += v;
+      });
+    });
+    if (lines.length) {
+      const lt = niceTicks(0, Math.max(...lines.flatMap((s) => s.values))), lmax = lt[lt.length - 1];
+      const ly = (v) => y1 - (v / lmax) * (y1 - y0);
+      for (const v of lt) svg += `<text x="${x1 + 6}" y="${ly(v) + 4}" fill="#555">${fmtNum(v)}</text>`;
+      lines.forEach((s) => {
+        const col = s.color || OFFICE_COLORS[spec.series.indexOf(s) % OFFICE_COLORS.length];
+        const pts = s.values.map((v, i) => `${(x0 + band * (i + 0.5)).toFixed(1)},${ly(v).toFixed(1)}`);
+        svg += `<polyline points="${pts.join(" ")}" fill="none" stroke="${col}" stroke-width="2.5"/>`;
+        svg += pts.map((p) => `<circle cx="${p.split(",")[0]}" cy="${p.split(",")[1]}" r="3" fill="${col}"/>`).join("");
+      });
+      if (spec.y2Title) svg += `<text transform="translate(${W - 10} ${(y0 + y1) / 2}) rotate(90)" text-anchor="middle" font-size="13">${spec.y2Title}</text>`;
+    }
+    svg += `<line x1="${x0}" x2="${x1}" y1="${y1}" y2="${y1}" stroke="#888"/>`;
+    if (spec.yTitle) svg += `<text transform="translate(16 ${(y0 + y1) / 2}) rotate(-90)" text-anchor="middle" font-size="13">${spec.yTitle}</text>`;
+  } else {
+    const vx = (v) => x0 + (v / vmax) * (x1 - x0), band = (y1 - y0) / n, bh = band * (1 - gap);
+    for (const v of vt) {
+      svg += `<line x1="${vx(v)}" x2="${vx(v)}" y1="${y0}" y2="${y1}" stroke="#e3e3e3"/>`;
+      svg += `<text x="${vx(v)}" y="${y1 + 16}" text-anchor="middle" fill="#555">${fmtV(v)}</text>`;
+    }
+    cats.forEach((c, i) => {
+      const cy = y0 + band * (i + 0.5), v = bars[0].values[i];
+      svg += `<text x="${x0 - 6}" y="${cy + 4}" text-anchor="end" fill="#333">${c}</text>`;
+      svg += `<rect x="${x0}" y="${(cy - bh / 2).toFixed(1)}" width="${(vx(v) - x0).toFixed(1)}" height="${bh.toFixed(1)}" fill="${bars[0].color || OFFICE_COLORS[0]}"/>`;
+      if (spec.labels) svg += `<text x="${vx(v) + 5}" y="${cy + 4}" fill="#333">${fmtV(v)}</text>`;
+    });
+    svg += `<line x1="${x0}" x2="${x0}" y1="${y0}" y2="${y1}" stroke="#888"/>`;
+  }
+  if (spec.xTitle) svg += `<text x="${(x0 + x1) / 2}" y="${H - 10}" text-anchor="middle" font-size="13">${spec.xTitle}</text>`;
+  box.innerHTML = svg + "</svg>" + (spec.caption ? `<div class="xl-caption">${spec.caption}</div>` : "");
+}
+
+function drawPie(box, spec) {
+  const W = 600, H = spec.height || 300, cx = 160, cy = (H + (spec.title ? 24 : 0)) / 2, r = Math.min(120, cy - 30);
+  const total = spec.values.reduce((a, b) => a + b, 0);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" font-family="Calibri, Segoe UI, Arial" font-size="12">`;
+  if (spec.title) svg += `<text x="${W / 2}" y="22" text-anchor="middle" font-size="15" font-weight="600">${spec.title}</text>`;
+  let a0 = -Math.PI / 2;
+  spec.values.forEach((v, k) => {
+    const a1 = a0 + (v / total) * 2 * Math.PI, col = OFFICE_COLORS[k % OFFICE_COLORS.length];
+    const p = (a) => `${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`;
+    svg += `<path d="M${cx},${cy} L${p(a0)} A${r},${r} 0 ${a1 - a0 > Math.PI ? 1 : 0} 1 ${p(a1)} z" fill="${col}" stroke="#fff" stroke-width="1.5"/>`;
+    const am = (a0 + a1) / 2;
+    svg += `<text x="${cx + 0.68 * r * Math.cos(am)}" y="${cy + 0.68 * r * Math.sin(am) + 4}" text-anchor="middle" fill="#fff" font-weight="600">${fmtNum(+(100 * v / total).toFixed(0))}%</text>`;
+    const ly = cy - (spec.values.length * 22) / 2 + k * 22 + 10;
+    svg += `<rect x="330" y="${ly - 10}" width="12" height="12" fill="${col}"/><text x="350" y="${ly}">${spec.categories[k]}</text>`;
+    a0 = a1;
+  });
+  box.innerHTML = svg + "</svg>" + (spec.caption ? `<div class="xl-caption">${spec.caption}</div>` : "");
+}
