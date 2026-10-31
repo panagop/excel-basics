@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>09 · Ταξινόμηση και φίλτρα – Excel για Πολιτικούς Μηχανικούς</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .demo { border: 1px solid #b7b7b7; border-radius: 4px; margin: 1.2em 0; font-family: Calibri, "Segoe UI", Arial, sans-serif; font-size: 15px; }
+    .demo-bar { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding: 8px 10px; background: #f3f3f3; border-bottom: 1px solid #d4d4d4; }
+    .demo-bar select, .demo-bar button { font: inherit; padding: 2px 6px; }
+    .demo-scroll { max-height: 340px; overflow: auto; }
+    .demo table { border-collapse: collapse; width: 100%; }
+    .demo th { position: sticky; top: 0; background: #217346; color: #fff; padding: 4px 8px; text-align: left; cursor: pointer; white-space: nowrap; }
+    .demo th:hover { background: #185c37; }
+    .demo td { border-bottom: 1px solid #e6e6e6; padding: 3px 8px; }
+    .demo tr:nth-child(even) td { background: #eef6f0; }
+    .demo td.n { text-align: right; }
+    .demo-sums { display: flex; flex-wrap: wrap; gap: 8px 24px; padding: 8px 10px; border-top: 1px solid #d4d4d4; background: #fafafa; }
+    .demo-sums b { font-family: Consolas, monospace; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Μάθημα 9 · Ταξινόμηση, φίλτρα και Πίνακες</h1>
+  <p class="subtitle">Προμέτρηση σκυροδέματος: οργάνωση δεδομένων, μερικά αθροίσματα με SUMIF και SUMIFS</p>
+
+  <div class="goals">
+    <h3>Σε αυτό το μάθημα θα μάθετε να</h3>
+    <ul>
+      <li>οργανώνετε δεδομένα σε μορφή λίστας (μία γραμμή ανά στοιχείο)·</li>
+      <li>ταξινομείτε με ένα ή περισσότερα κριτήρια·</li>
+      <li>φιλτράρετε, ώστε να βλέπετε μόνο ό,τι σας ενδιαφέρει·</li>
+      <li>μετατρέπετε μια περιοχή σε <strong>Πίνακα</strong> του Excel·</li>
+      <li>υπολογίζετε αθροίσματα ανά όροφο και ανά είδος στοιχείου με <code>SUMIF</code>, <code>COUNTIF</code>, <code>SUMIFS</code>.</li>
+    </ul>
+  </div>
+
+  <h2>1. Δεδομένα σε μορφή λίστας</h2>
+  <p>
+    Μια προμέτρηση είναι μια <strong>λίστα</strong>: κάθε γραμμή ένα στοιχείο, κάθε στήλη ένα χαρακτηριστικό
+    (κωδικός, όροφος, είδος, διαστάσεις, όγκος). Για να δουλέψουν η ταξινόμηση, τα φίλτρα και οι Πίνακες,
+    η λίστα πρέπει να τηρεί μερικούς κανόνες:
+  </p>
+  <ul>
+    <li><strong>μία</strong> γραμμή επικεφαλίδων, με μοναδικά ονόματα στηλών·</li>
+    <li>χωρίς κενές γραμμές ή στήλες μέσα στη λίστα·</li>
+    <li>χωρίς συγχωνευμένα κελιά·</li>
+    <li>σε κάθε στήλη το ίδιο είδος δεδομένου – π.χ. ο όροφος ως αριθμός (0, 1, 2), όχι άλλοτε «Ισόγειο» και άλλοτε «1ος».</li>
+  </ul>
+  <div class="note">
+    <strong>Γιατί αριθμός για τον όροφο;</strong> Τα κείμενα ταξινομούνται αλφαβητικά: «1ος», «2ος», «Ισόγειο»
+    – το ισόγειο θα έβγαινε τελευταίο. Με 0, 1, 2 η σειρά είναι πάντα σωστή.
+  </div>
+  <p>
+    Το παράδειγμα του μαθήματος είναι η προμέτρηση σκυροδέματος ενός τριώροφου κτιρίου: 30 στοιχεία
+    (4 υποστυλώματα, 4 δοκοί και 2 πλάκες ανά όροφο), γραμμένα με τυχαία σειρά, όπως συχνά προκύπτουν από
+    τα σχέδια. Οι στήλες Δ1·Δ2·Δ3 είναι b·h·H για τα υποστυλώματα, b·h·L για τις δοκούς και t·L<sub>x</sub>·L<sub>y</sub>
+    για τις πλάκες, άρα V = Δ1·Δ2·Δ3 για όλα.
+  </p>
+
+  <h2>2. Δοκιμάστε εδώ: ταξινόμηση και φίλτρο</h2>
+  <p>
+    Κάντε κλικ σε μια επικεφαλίδα για ταξινόμηση (δεύτερο κλικ: αντίστροφη σειρά) και χρησιμοποιήστε τις
+    λίστες για φιλτράρισμα. Παρατηρήστε τα δύο αθροίσματα στο κάτω μέρος.
+  </p>
+  <div class="demo">
+    <div class="demo-bar">
+      <label>Όροφος: <select id="f-floor"><option value="">(Όλοι)</option><option>0</option><option>1</option><option>2</option></select></label>
+      <label>Στοιχείο: <select id="f-type"><option value="">(Όλα)</option><option>Υποστύλωμα</option><option>Δοκός</option><option>Πλάκα</option></select></label>
+      <button id="f-clear">Καθαρισμός φίλτρων</button>
+    </div>
+    <div class="demo-scroll"><table id="demo-table"></table></div>
+    <div class="demo-sums">
+      <span><code>SUM</code> όλης της στήλης V: <b id="s-sum"></b> m³</span>
+      <span><code>SUBTOTAL(109;…)</code> – μόνο τα ορατά: <b id="s-sub"></b> m³</span>
+      <span>Ορατές γραμμές: <b id="s-count"></b></span>
+    </div>
+  </div>
+
+  <h2>3. Ταξινόμηση</h2>
+  <ul>
+    <li><strong>Απλή:</strong> κάντε κλικ σε ένα κελί της στήλης και πατήστε <em>Δεδομένα → Αύξουσα / Φθίνουσα
+      ταξινόμηση</em> (A→Z / Z→A). Το Excel ταξινομεί <em>ολόκληρες τις γραμμές</em>, όχι μόνο τη στήλη.</li>
+    <li><strong>Με πολλά κριτήρια:</strong> <em>Δεδομένα → Ταξινόμηση</em> (Sort) → <em>Προσθήκη επιπέδου</em>
+      (Add Level). Π.χ. πρώτα κατά <em>Όροφο</em>, μετά κατά <em>Στοιχείο</em>, μετά κατά <em>Κωδικό</em>.</li>
+  </ul>
+  <div class="note">
+    <strong>Ποτέ μην ταξινομείτε μία στήλη μόνη της</strong> (επιλέγοντας μόνο αυτή): οι τιμές της θα
+    αποσυνδεθούν από τις υπόλοιπες στήλες της γραμμής και τα δεδομένα θα καταστραφούν. Αν το Excel
+    ρωτήσει «Επέκταση της επιλογής;», απαντήστε ναι. Και θυμηθείτε το <kbd>Ctrl</kbd>+<kbd>Z</kbd>.
+  </div>
+
+  <h2>4. Φίλτρα</h2>
+  <p>
+    <em>Δεδομένα → Φίλτρο</em> (Filter), ή <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd>: σε κάθε επικεφαλίδα
+    εμφανίζεται ένα βελάκι. Από εκεί επιλέγετε ποιες τιμές θα φαίνονται – π.χ. μόνο «Πλάκα», ή μόνο ο
+    όροφος 1. Οι υπόλοιπες γραμμές <strong>κρύβονται</strong>, δεν διαγράφονται. Τα φίλτρα σε διαφορετικές
+    στήλες συνδυάζονται (όροφος 1 <em>και</em> δοκοί).
+  </p>
+  <p>
+    Με φίλτρο ενεργό, επιλέξτε τη στήλη V: η <strong>Γραμμή κατάστασης</strong> δείχνει το άθροισμα
+    <em>μόνο των ορατών</em> κελιών – ο πιο γρήγορος τρόπος να απαντήσετε «πόσο σκυρόδεμα έχουν οι πλάκες;».
+  </p>
+  <h3>SUM ή SUBTOTAL;</h3>
+  <p>
+    Το <code>SUM</code> αθροίζει <em>όλα</em> τα κελιά της περιοχής, ορατά ή κρυμμένα. Το
+    <code>=SUBTOTAL(109;G5:G34)</code> αθροίζει <em>μόνο τα ορατά</em> – γι’ αυτό το χρησιμοποιεί το Excel
+    στη γραμμή συνόλων των Πινάκων. Το 109 σημαίνει «άθροισμα, αγνοώντας κρυμμένες γραμμές»· με 101
+    παίρνετε μέση τιμή, με 103 πλήθος.
+  </p>
+
+  <h2>5. Πίνακες του Excel</h2>
+  <p>
+    Ένας <strong>Πίνακας</strong> (Table) είναι μια λίστα που το Excel «αναγνωρίζει» ως ενιαίο σύνολο. Κάντε
+    κλικ μέσα στη λίστα και πατήστε <kbd>Ctrl</kbd>+<kbd>T</kbd> (ή <em>Κεντρική → Μορφοποίηση ως πίνακα</em>).
+    Κερδίζετε:
+  </p>
+  <ul>
+    <li><strong>φίλτρα και εναλλασσόμενα χρώματα γραμμών</strong> αυτόματα·</li>
+    <li><strong>αυτόματη επέκταση:</strong> γράψτε ένα νέο στοιχείο στην πρώτη κενή γραμμή κάτω από τον Πίνακα
+      και γίνεται μέρος του· οι τύποι και η μορφοποίηση συνεχίζουν μόνοι τους·</li>
+    <li><strong>υπολογιζόμενες στήλες:</strong> γράψτε τον τύπο στο πρώτο κελί μιας στήλης και αντιγράφεται
+      αυτόματα σε όλη τη στήλη·</li>
+    <li><strong>γραμμή συνόλων:</strong> καρτέλα <em>Σχεδίαση πίνακα</em> (Table Design) → <em>Γραμμή συνόλων</em>
+      (Total Row) – με επιλογή άθροισμα, μέση τιμή, πλήθος κ.λπ., που σέβονται τα φίλτρα·</li>
+    <li>οι επικεφαλίδες μένουν ορατές στη θέση των γραμμάτων των στηλών καθώς κυλάτε προς τα κάτω.</li>
+  </ul>
+  <h3>Δομημένες αναφορές</h3>
+  <p>
+    Μέσα σε Πίνακα, όταν γράφετε τύπο κάνοντας κλικ στα κελιά, το Excel χρησιμοποιεί τα <em>ονόματα των
+    στηλών</em> αντί για διευθύνσεις:
+  </p>
+  <table class="plain">
+    <tr><th>Τύπος</th><th>Σημαίνει</th></tr>
+    <tr><td><code>=[@[Δ1 (m)]]*[@[Δ2 (m)]]*[@[Δ3 (m)]]</code></td><td>Δ1·Δ2·Δ3 της <em>ίδιας γραμμής</em> (το <code>@</code>)</td></tr>
+    <tr><td><code>=SUM(Prometrisi[V (m³)])</code></td><td>άθροισμα όλης της στήλης V του Πίνακα «Prometrisi»</td></tr>
+  </table>
+  <p>
+    Διαβάζονται σαν εξισώσεις και δεν χρειάζονται <code>$</code>: όταν ο Πίνακας μεγαλώνει, μεγαλώνουν μαζί του.
+    Τα διπλά άγκιστρα <code>[[…]]</code> χρειάζονται επειδή τα ονόματα των στηλών έχουν κενά και παρενθέσεις.
+    Το όνομα του Πίνακα αλλάζει από <em>Σχεδίαση πίνακα → Όνομα πίνακα</em>.
+  </p>
+
+  <h2>6. Αθροίσματα υπό συνθήκη: SUMIF, COUNTIF, SUMIFS</h2>
+  <p>Για έναν σταθερό πίνακα συνόλων ανά όροφο, που δεν εξαρτάται από τα φίλτρα:</p>
+  <table class="plain">
+    <tr><th>Συνάρτηση</th><th>Τι κάνει</th></tr>
+    <tr><td><code>SUMIF(περιοχή_κριτηρίου; κριτήριο; περιοχή_άθροισης)</code></td><td>άθροισμα των γραμμών που ικανοποιούν το κριτήριο</td></tr>
+    <tr><td><code>COUNTIF(περιοχή_κριτηρίου; κριτήριο)</code></td><td>πλήθος των γραμμών που το ικανοποιούν</td></tr>
+    <tr><td><code>AVERAGEIF(…)</code></td><td>μέση τιμή, με την ίδια λογική</td></tr>
+    <tr><td><code>SUMIFS(περιοχή_άθροισης; περιοχή1; κριτήριο1; περιοχή2; κριτήριο2; …)</code></td><td>άθροισμα με <em>πολλά</em> κριτήρια ταυτόχρονα</td></tr>
+  </table>
+  <p>Όγκος σκυροδέματος του ορόφου που γράφεται στο <code>I10</code>:</p>
+  <p style="text-align:center"><code style="font-size:1.05em">=SUMIF($B$5:$B$34;I10;$G$5:$G$34)</code></p>
+
+  <div class="xl" data-sheet='{
+    "cols": 5, "rows": 4, "start": "C2",
+    "caption": "Πίνακας διπλής εισόδου με SUMIFS: όροφος (γραμμές) × είδος στοιχείου (στήλες). Ένας τύπος, με μικτές αναφορές.",
+    "cells": {
+      "A1": {"v": "Όροφος \\ Στοιχείο", "hdr": 1}, "B1": {"v": "Υποστύλωμα", "hdr": 1}, "C1": {"v": "Δοκός", "hdr": 1}, "D1": {"v": "Πλάκα", "hdr": 1}, "E1": {"v": "Σύνολο", "hdr": 1},
+      "A2": {"v": 0, "hdr": 1}, "B2": {"v": 2.835, "d": 3, "f": "=SUMIFS($G$5:$G$34;$B$5:$B$34;$A2;$C$5:$C$34;B$1)"}, "C2": {"v": 3.41, "d": 3, "f": "=SUMIFS($G$5:$G$34;$B$5:$B$34;$A2;$C$5:$C$34;C$1)"}, "D2": {"v": 12.6, "d": 3, "f": "=SUMIFS($G$5:$G$34;$B$5:$B$34;$A2;$C$5:$C$34;D$1)"}, "E2": {"v": 18.845, "d": 3, "f": "=SUM(B2:D2)"},
+      "A3": {"v": 1, "hdr": 1}, "B3": {"v": 1.92, "d": 3, "f": "=SUMIFS($G$5:$G$34;$B$5:$B$34;$A3;$C$5:$C$34;B$1)"}, "C3": {"v": 3.41, "d": 3, "f": "=SUMIFS($G$5:$G$34;$B$5:$B$34;$A3;$C$5:$C$34;C$1)"}, "D3": {"v": 12.6, "d": 3, "f": "=SUMIFS($G$5:$G$34;$B$5:$B$34;$A3;$C$5:$C$34;D$1)"}, "E3": {"v": 17.93, "d": 3, "f": "=SUM(B3:D3)"},
+      "A4": {"v": 2, "hdr": 1}, "B4": {"v": 1.92, "d": 3, "f": "=SUMIFS($G$5:$G$34;$B$5:$B$34;$A4;$C$5:$C$34;B$1)"}, "C4": {"v": 3.41, "d": 3, "f": "=SUMIFS($G$5:$G$34;$B$5:$B$34;$A4;$C$5:$C$34;C$1)"}, "D4": {"v": 12.6, "d": 3, "f": "=SUMIFS($G$5:$G$34;$B$5:$B$34;$A4;$C$5:$C$34;D$1)"}, "E4": {"v": 17.93, "d": 3, "f": "=SUM(B4:D4)"}
+    }}'></div>
+  <p>
+    Το κριτήριο μπορεί να είναι και σύγκριση, σε εισαγωγικά: <code>=COUNTIF(G5:G34;"&gt;1")</code> μετράει τα
+    στοιχεία με όγκο πάνω από 1 m³. Και οι τρεις συναρτήσεις αγνοούν τα φίλτρα – δίνουν πάντα το ίδιο αποτέλεσμα.
+  </p>
+
+  <h2>7. Πάγωμα επικεφαλίδων</h2>
+  <p>
+    Σε μεγάλες λίστες: <em>Προβολή → Πάγωμα τμημάτων παραθύρου → Πάγωμα πρώτης γραμμής</em>
+    (View → Freeze Panes). Η γραμμή επικεφαλίδων μένει πάντα ορατή καθώς κυλάτε. Στο αρχείο του μαθήματος
+    είναι ήδη παγωμένες οι γραμμές 1–4.
+  </p>
+
+  <h2>8. Δοκιμάστε μόνοι σας</h2>
+  <p>
+    <a class="download" href="../files/09-sort-filter.xlsx" download>⬇ Λήψη 09-sort-filter.xlsx</a>
+  </p>
+  <ol class="steps">
+    <li>Στο φύλλο <strong>Παράδειγμα</strong> η λίστα είναι ήδη Πίνακας. Ταξινομήστε την κατά όροφο και είδος,
+      φιλτράρετε μόνο τις πλάκες και συγκρίνετε το <code>SUM</code> με το <code>SUBTOTAL</code>. Οι πίνακες
+      <code>SUMIF</code>/<code>SUMIFS</code> δεν αλλάζουν.</li>
+    <li>Προσθέστε ένα νέο στοιχείο στην πρώτη κενή γραμμή κάτω από τον Πίνακα: ο τύπος του V συμπληρώνεται μόνος του.</li>
+    <li>Στο φύλλο <strong>Άσκηση</strong> (τετραώροφο κτίριο, 24 στοιχεία) ακολουθήστε τα βήματα της στήλης I:
+      υπολογισμός V, μετατροπή σε Πίνακα, ταξινόμηση, φίλτρο, και πίνακες συνόλων με <code>SUMIF</code>,
+      <code>COUNTIF</code> και <code>SUMIFS</code>.</li>
+  </ol>
+
+  <h2>Σύνοψη</h2>
+  <table class="plain">
+    <tr><th>Θέλω…</th><th>Εργαλείο</th></tr>
+    <tr><td>ταξινόμηση με πολλά κριτήρια</td><td><em>Δεδομένα → Ταξινόμηση → Προσθήκη επιπέδου</em></td></tr>
+    <tr><td>να βλέπω μόνο κάποιες γραμμές</td><td>Φίλτρο: <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd></td></tr>
+    <tr><td>λίστα που μεγαλώνει μόνη της</td><td>Πίνακας: <kbd>Ctrl</kbd>+<kbd>T</kbd></td></tr>
+    <tr><td>άθροισμα μόνο των ορατών</td><td><code>SUBTOTAL(109;…)</code> ή Γραμμή κατάστασης</td></tr>
+    <tr><td>άθροισμα ανά κατηγορία</td><td><code>SUMIF</code> / <code>SUMIFS</code></td></tr>
+    <tr><td>πλήθος ανά κατηγορία</td><td><code>COUNTIF</code> / <code>COUNTIFS</code></td></tr>
+  </table>
+
+  <div class="pager"></div>
+</main>
+<script src="../assets/js/site.js"></script>
+<script>
+  // Interactive sort/filter demo with the 30 elements of the example workbook.
+  const DATA = [["Κ2",2,"Υποστύλωμα",0.4,0.4,3],["Δ2",0,"Δοκός",0.25,0.5,5],["Δ2",1,"Δοκός",0.25,0.5,5],["Π2",2,"Πλάκα",0.2,6,6],["Δ4",0,"Δοκός",0.3,0.6,6],["Π1",2,"Πλάκα",0.18,5,6],["Π2",0,"Πλάκα",0.2,6,6],["Κ1",0,"Υποστύλωμα",0.45,0.45,3.5],["Κ4",1,"Υποστύλωμα",0.4,0.4,3],["Π1",0,"Πλάκα",0.18,5,6],["Δ4",2,"Δοκός",0.3,0.6,6],["Κ3",2,"Υποστύλωμα",0.4,0.4,3],["Δ3",2,"Δοκός",0.3,0.6,6],["Δ1",1,"Δοκός",0.25,0.5,5],["Κ4",2,"Υποστύλωμα",0.4,0.4,3],["Δ1",2,"Δοκός",0.25,0.5,5],["Π2",1,"Πλάκα",0.2,6,6],["Δ3",0,"Δοκός",0.3,0.6,6],["Δ3",1,"Δοκός",0.3,0.6,6],["Δ2",2,"Δοκός",0.25,0.5,5],["Π1",1,"Πλάκα",0.18,5,6],["Κ2",1,"Υποστύλωμα",0.4,0.4,3],["Κ4",0,"Υποστύλωμα",0.45,0.45,3.5],["Δ4",1,"Δοκός",0.3,0.6,6],["Κ3",0,"Υποστύλωμα",0.45,0.45,3.5],["Κ2",0,"Υποστύλωμα",0.45,0.45,3.5],["Κ1",2,"Υποστύλωμα",0.4,0.4,3],["Κ3",1,"Υποστύλωμα",0.4,0.4,3],["Δ1",0,"Δοκός",0.25,0.5,5],["Κ1",1,"Υποστύλωμα",0.4,0.4,3]]
+    .map((r) => [...r, r[3] * r[4] * r[5]]);
+  const HEAD = ["Κωδικός", "Όροφος", "Στοιχείο", "Δ1 (m)", "Δ2 (m)", "Δ3 (m)", "V (m³)"];
+  const num = (v, d) => v.toLocaleString("el-GR", { minimumFractionDigits: d, maximumFractionDigits: d });
+  let sortCol = null, sortDir = 1;
+  const fFloor = document.getElementById("f-floor"), fType = document.getElementById("f-type");
+
+  function render() {
+    let rows = DATA.filter((r) => (fFloor.value === "" || r[1] === +fFloor.value) && (fType.value === "" || r[2] === fType.value));
+    if (sortCol !== null) {
+      rows = [...rows].sort((a, b) => (a[sortCol] > b[sortCol] ? 1 : a[sortCol] < b[sortCol] ? -1 : 0) * sortDir);
+    }
+    const arrow = (j) => (j === sortCol ? (sortDir > 0 ? " ▲" : " ▼") : " ▾");
+    document.getElementById("demo-table").innerHTML =
+      "<tr>" + HEAD.map((h, j) => `<th data-col="${j}">${h}${arrow(j)}</th>`).join("") + "</tr>" +
+      rows.map((r) => "<tr>" + r.map((v, j) =>
+        `<td class="${j === 1 || j > 2 ? "n" : ""}">${j > 2 ? num(v, j === 6 ? 3 : 2) : v}</td>`).join("") + "</tr>").join("");
+    document.getElementById("s-sum").textContent = num(DATA.reduce((s, r) => s + r[6], 0), 3);
+    document.getElementById("s-sub").textContent = num(rows.reduce((s, r) => s + r[6], 0), 3);
+    document.getElementById("s-count").textContent = rows.length;
+  }
+  document.getElementById("demo-table").addEventListener("click", (e) => {
+    const th = e.target.closest("th");
+    if (!th) return;
+    const j = +th.dataset.col;
+    sortDir = sortCol === j ? -sortDir : 1;
+    sortCol = j;
+    render();
+  });
+  fFloor.addEventListener("change", render);
+  fType.addEventListener("change", render);
+  document.getElementById("f-clear").addEventListener("click", () => { fFloor.value = ""; fType.value = ""; render(); });
+  render();
+</script>
+</body>
+</html>
