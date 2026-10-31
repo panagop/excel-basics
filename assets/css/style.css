@@ -1,0 +1,206 @@
+/* Excel Basics – shared styles */
+:root {
+  --green: #217346;
+  --green-dark: #185c37;
+  --green-light: #e8f3ec;
+  --text: #1f2328;
+  --muted: #5d6670;
+  --border: #d0d7de;
+  --bg: #ffffff;
+  --bg-soft: #f6f8fa;
+  --note: #fff8e1;
+  --note-border: #f2c94c;
+  --sidebar-w: 270px;
+  --header-h: 56px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+}
+
+a { color: var(--green-dark); }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  background: var(--green);
+  color: #fff;
+  z-index: 20;
+}
+.site-header a { color: #fff; text-decoration: none; font-weight: 600; font-size: 1.1rem; }
+.site-header .logo {
+  display: inline-grid; place-items: center;
+  width: 32px; height: 32px; border-radius: 6px;
+  background: #fff; color: var(--green); font-weight: 800;
+}
+.menu-btn {
+  display: none;
+  background: none; border: 1px solid rgba(255,255,255,.6); color: #fff;
+  border-radius: 6px; padding: 4px 10px; font-size: 1rem; cursor: pointer;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  position: fixed;
+  top: var(--header-h); bottom: 0; left: 0;
+  width: var(--sidebar-w);
+  overflow-y: auto;
+  background: var(--bg-soft);
+  border-right: 1px solid var(--border);
+  padding: 16px 0;
+  z-index: 10;
+}
+.sidebar h2 {
+  font-size: .8rem; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--muted); margin: 8px 20px;
+}
+.sidebar ol { list-style: none; margin: 0; padding: 0; }
+.sidebar li > a, .sidebar li > span {
+  display: flex; gap: 10px;
+  padding: 7px 20px;
+  text-decoration: none; color: var(--text); font-size: .95rem;
+  border-left: 4px solid transparent;
+}
+.sidebar li a:hover { background: var(--green-light); }
+.sidebar li a.active {
+  background: var(--green-light);
+  border-left-color: var(--green);
+  font-weight: 600;
+}
+.sidebar li > span { color: #9aa3ab; cursor: default; }
+.sidebar .num { min-width: 1.6em; color: var(--muted); }
+.sidebar .soon { font-size: .7rem; margin-left: auto; padding-top: 3px; }
+
+/* ---------- Main content ---------- */
+main {
+  margin-left: var(--sidebar-w);
+  padding: calc(var(--header-h) + 24px) 40px 60px;
+  max-width: calc(var(--sidebar-w) + 900px);
+}
+main h1 { font-size: 2rem; margin: 0 0 4px; line-height: 1.25; }
+main h2 { margin-top: 2.2em; padding-bottom: 4px; border-bottom: 2px solid var(--green-light); }
+main h3 { margin-top: 1.6em; }
+.subtitle { color: var(--muted); margin-top: 0; }
+
+.goals {
+  background: var(--green-light);
+  border-left: 5px solid var(--green);
+  padding: 12px 20px; border-radius: 6px;
+}
+.goals h3 { margin: 0 0 4px; }
+.goals ul { margin: 0; }
+
+.note {
+  background: var(--note);
+  border-left: 5px solid var(--note-border);
+  padding: 10px 18px; border-radius: 6px; margin: 1.2em 0;
+}
+
+kbd {
+  display: inline-block; padding: 1px 6px;
+  font: .85em Consolas, monospace;
+  background: #fff; border: 1px solid var(--border); border-bottom-width: 2px;
+  border-radius: 4px;
+}
+code {
+  font-family: Consolas, "Cascadia Mono", monospace; font-size: .92em;
+  background: var(--bg-soft); border: 1px solid var(--border);
+  padding: 1px 5px; border-radius: 4px;
+}
+
+table.plain { border-collapse: collapse; margin: 1em 0; }
+table.plain th, table.plain td { border: 1px solid var(--border); padding: 6px 12px; text-align: left; }
+table.plain th { background: var(--bg-soft); }
+
+ol.steps li { margin-bottom: .5em; }
+
+.download {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--green); color: #fff; text-decoration: none;
+  padding: 10px 18px; border-radius: 6px; font-weight: 600;
+}
+.download:hover { background: var(--green-dark); }
+
+/* ---------- Lesson cards (home page) ---------- */
+.cards {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  margin-top: 1em;
+}
+.card {
+  display: block; padding: 16px 18px;
+  border: 1px solid var(--border); border-radius: 8px;
+  text-decoration: none; color: var(--text);
+}
+a.card:hover { border-color: var(--green); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.card .num { color: var(--green); font-weight: 700; }
+.card h3 { margin: 4px 0; font-size: 1.05rem; }
+.card p { margin: 0; color: var(--muted); font-size: .9rem; }
+.card.disabled { opacity: .55; }
+
+/* ---------- Prev / next ---------- */
+.pager {
+  display: flex; justify-content: space-between; gap: 16px;
+  margin-top: 3em; padding-top: 1em; border-top: 1px solid var(--border);
+}
+.pager a {
+  text-decoration: none; padding: 10px 16px;
+  border: 1px solid var(--border); border-radius: 6px;
+}
+.pager a:hover { border-color: var(--green); }
+.pager .next { margin-left: auto; text-align: right; }
+.pager small { display: block; color: var(--muted); }
+
+/* ---------- Mock Excel grid ---------- */
+.xl {
+  border: 1px solid #b7b7b7; border-radius: 4px;
+  font-family: Calibri, "Segoe UI", Arial, sans-serif; font-size: 15px;
+  margin: 1.2em 0; overflow-x: auto; background: #fff;
+}
+.xl-bar {
+  display: flex; align-items: stretch; border-bottom: 1px solid #d4d4d4;
+  background: #fff; min-width: max-content;
+}
+.xl-name {
+  width: 80px; padding: 4px 8px; border-right: 1px solid #d4d4d4;
+  font-family: inherit;
+}
+.xl-fx { padding: 4px 10px; color: #777; font-style: italic; border-right: 1px solid #d4d4d4; }
+.xl-formula { padding: 4px 10px; flex: 1; min-width: 260px; font-family: Consolas, monospace; }
+.xl table { border-collapse: collapse; }
+.xl th {
+  background: #f3f3f3; color: #444; font-weight: normal;
+  border: 1px solid #d4d4d4; padding: 2px 6px; min-width: 34px;
+}
+.xl th.sel { background: #d3e7d9; color: var(--green-dark); font-weight: 600; }
+.xl td {
+  border: 1px solid #e1e1e1; padding: 3px 8px; min-width: 90px; height: 26px;
+  cursor: cell; white-space: nowrap;
+}
+.xl td.num { text-align: right; }
+.xl td.hdr { font-weight: 700; background: #f0f7f2; }
+.xl td.formula { background: #fafdfb; }
+.xl td.sel { outline: 2px solid var(--green); outline-offset: -2px; }
+.xl-caption { font-size: .85rem; color: var(--muted); padding: 4px 10px; border-top: 1px solid #e1e1e1; background: #fafafa; }
+
+/* ---------- Mobile ---------- */
+@media (max-width: 860px) {
+  .menu-btn { display: inline-block; }
+  .sidebar { transform: translateX(-100%); transition: transform .2s; box-shadow: 2px 0 10px rgba(0,0,0,.15); }
+  body.nav-open .sidebar { transform: none; }
+  main { margin-left: 0; padding: calc(var(--header-h) + 16px) 16px 40px; }
+  main h1 { font-size: 1.6rem; }
+}
