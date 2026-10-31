@@ -13,7 +13,7 @@ const LESSONS = [
   { file: "08-lookup.html", title: "Πίνακες αναζήτησης (XLOOKUP)", ready: true },
   { file: "09-sort-filter.html", title: "Ταξινόμηση, φίλτρα και Πίνακες", ready: true },
   { file: "10-goal-seek.html", title: "Αναζήτηση στόχου: επίλυση εξισώσεων", ready: true },
-  { file: "11-matrices.html", title: "Μητρώα και γραμμικά συστήματα" },
+  { file: "11-matrices.html", title: "Μητρώα και γραμμικά συστήματα", ready: true },
 ];
 
 const GUIDES = [

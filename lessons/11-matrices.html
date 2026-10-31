@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>11 · Μητρώα – Excel για Πολιτικούς Μηχανικούς</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .figure { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; margin: 1.2em 0; }
+    .figure svg { max-width: 100%; height: auto; border: 1px solid var(--border); border-radius: 4px; background: #fff; }
+    .figure .cap { flex: 1; min-width: 240px; color: var(--muted); font-size: .95rem; }
+    table.mat td { text-align: center; min-width: 46px; font-family: Consolas, monospace; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Μάθημα 11 · Μητρώα και γραμμικά συστήματα</h1>
+  <p class="subtitle">MMULT, MINVERSE, MDETERM – διατμητικό πλαίσιο και δικτύωμα σε μορφή μητρώων</p>
+
+  <div class="goals">
+    <h3>Σε αυτό το μάθημα θα μάθετε να</h3>
+    <ul>
+      <li>κάνετε πράξεις μητρώων στο Excel (ανάστροφο, γινόμενο, αντίστροφο, ορίζουσα)·</li>
+      <li>γράφετε τύπους που επιστρέφουν <em>πολλά</em> κελιά·</li>
+      <li>λύνετε ένα γραμμικό σύστημα A·x = b με έναν τύπο·</li>
+      <li>λύνετε ένα διατμητικό πλαίσιο K·u = F – η πρώτη σας επαφή με τη μητρωική στατική·</li>
+      <li>γράφετε τη μέθοδο των κόμβων ενός δικτυώματος ως σύστημα εξισώσεων.</li>
+    </ul>
+  </div>
+
+  <h2>1. Μητρώα στο Excel</h2>
+  <p>
+    Για το Excel ένα μητρώο είναι απλώς μια <strong>ορθογωνική περιοχή κελιών</strong>: το μητρώο A 3×3 είναι
+    π.χ. η περιοχή <code>B6:D8</code> και το διάνυσμα b η στήλη <code>F6:F8</code>. Οι συναρτήσεις μητρώων:
+  </p>
+  <table class="plain">
+    <tr><th>Συνάρτηση</th><th>Αποτέλεσμα</th><th>Μέγεθος αποτελέσματος</th></tr>
+    <tr><td><code>TRANSPOSE(A)</code></td><td>ανάστροφο A<sup>T</sup></td><td>n×m αν το A είναι m×n</td></tr>
+    <tr><td><code>MMULT(A;B)</code></td><td>γινόμενο A·B</td><td>γραμμές του A × στήλες του B</td></tr>
+    <tr><td><code>MINVERSE(A)</code></td><td>αντίστροφο A<sup>−1</sup> (τετραγωνικό A)</td><td>n×n</td></tr>
+    <tr><td><code>MDETERM(A)</code></td><td>ορίζουσα det(A)</td><td>ένας αριθμός</td></tr>
+  </table>
+  <div class="note">
+    <strong>Γινόμενο μητρώων ≠ πολλαπλασιασμός κελιών.</strong> Το <code>=B6:D8*F6:F8</code> πολλαπλασιάζει
+    στοιχείο-προς-στοιχείο· το γινόμενο μητρώων είναι <strong>μόνο</strong> το <code>MMULT</code>. Και, όπως
+    στα Μαθηματικά, A·B ≠ B·A – η σειρά των ορισμάτων έχει σημασία.
+  </div>
+
+  <h2>2. Τύποι που επιστρέφουν πολλά κελιά</h2>
+  <p>Το <code>MINVERSE</code> ενός 3×3 επιστρέφει 9 τιμές. Πώς γράφεται εξαρτάται από την έκδοση:</p>
+  <ul>
+    <li><strong>Microsoft 365 / Excel 2021:</strong> γράψτε τον τύπο <em>σε ένα κελί</em> (το πάνω αριστερό) και
+      πατήστε <kbd>Enter</kbd>. Το αποτέλεσμα «χύνεται» αυτόματα στα γειτονικά κελιά (δυναμικοί πίνακες).
+      Αν κάποιο από αυτά δεν είναι κενό, εμφανίζεται το σφάλμα <code>#SPILL!</code>.</li>
+    <li><strong>Παλαιότερες εκδόσεις:</strong> επιλέξτε <em>πρώτα ολόκληρη</em> την περιοχή του αποτελέσματος
+      (π.χ. 3×3 κελιά), γράψτε τον τύπο και πατήστε <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Enter</kbd>. Ο τύπος
+      εμφανίζεται σε άγκιστρα <code>{=MINVERSE(B6:D8)}</code> και δεν μπορείτε να αλλάξετε μόνο ένα κελί του.</li>
+  </ul>
+  <p>
+    Τα αρχεία του μαθήματος χρησιμοποιούν τον δεύτερο τρόπο, που λειτουργεί σε <em>κάθε</em> έκδοση. Για να
+    διαγράψετε ή να αλλάξετε έναν τέτοιο τύπο, επιλέξτε ολόκληρη την περιοχή του.
+  </p>
+
+  <h2>3. Επίλυση του A·x = b</h2>
+  <p>Αν det(A) ≠ 0, το σύστημα έχει μοναδική λύση x = A<sup>−1</sup>·b – στο Excel, ένας τύπος:</p>
+  <p style="text-align:center"><code style="font-size:1.1em">=MMULT(MINVERSE(B6:D8);F6:F8)</code></p>
+
+  <div class="xl" data-sheet='{
+    "cols": 8, "rows": 4, "start": "H2",
+    "caption": "A στο B2:D4, b στο F2:F4, x στο H2:H4. Κάντε κλικ στα κελιά της στήλης H.",
+    "cells": {
+      "B1": {"v": "A", "hdr": 1}, "F1": {"v": "b", "hdr": 1}, "H1": {"v": "x", "hdr": 1},
+      "B2": {"v": 4}, "C2": {"v": -2}, "D2": {"v": 1}, "F2": {"v": 11},
+      "B3": {"v": -2}, "C3": {"v": 4}, "D3": {"v": -2}, "F3": {"v": -16},
+      "B4": {"v": 1}, "C4": {"v": -2}, "D4": {"v": 4}, "F4": {"v": 17},
+      "H2": {"v": 1, "f": "{=MMULT(MINVERSE(B2:D4);F2:F4)}"},
+      "H3": {"v": -2, "f": "{=MMULT(MINVERSE(B2:D4);F2:F4)}"},
+      "H4": {"v": 3, "f": "{=MMULT(MINVERSE(B2:D4);F2:F4)}"}
+    }}'></div>
+  <p>
+    <strong>Ελέγχετε πάντα τη λύση:</strong> το <code>=MMULT(A;x)-b</code> πρέπει να δίνει μηδενικά (ή αριθμούς
+    όπως 1E-15, λόγω στρογγυλεύσεων του υπολογιστή). Αν <code>MDETERM</code> = 0, το μητρώο δεν αντιστρέφεται
+    (<code>#NUM!</code>) – στη Στατική αυτό σημαίνει συνήθως <strong>μηχανισμό</strong>: ο φορέας δεν είναι
+    ευσταθής, π.χ. λείπει μια στήριξη.
+  </p>
+
+  <h2>4. Παράδειγμα: τριώροφο διατμητικό πλαίσιο</h2>
+  <div class="figure">
+    <svg viewBox="0 0 260 250" width="260" font-family="Calibri, Segoe UI, Arial" font-size="13">
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#C00000"/></marker></defs>
+      <g stroke="#333" stroke-width="2.5">
+        <line x1="90" y1="225" x2="90" y2="45"/><line x1="190" y1="225" x2="190" y2="45"/>
+      </g>
+      <g stroke="#217346" stroke-width="7">
+        <line x1="84" y1="165" x2="196" y2="165"/><line x1="84" y1="105" x2="196" y2="105"/><line x1="84" y1="45" x2="196" y2="45"/>
+      </g>
+      <line x1="70" y1="227" x2="210" y2="227" stroke="#333" stroke-width="2"/>
+      <g stroke="#333" stroke-width="1">
+        <line x1="75" y1="227" x2="68" y2="236"/><line x1="95" y1="227" x2="88" y2="236"/><line x1="115" y1="227" x2="108" y2="236"/><line x1="135" y1="227" x2="128" y2="236"/><line x1="155" y1="227" x2="148" y2="236"/><line x1="175" y1="227" x2="168" y2="236"/><line x1="195" y1="227" x2="188" y2="236"/>
+      </g>
+      <g stroke="#C00000" stroke-width="2" marker-end="url(#ar)">
+        <line x1="25" y1="165" x2="78" y2="165"/><line x1="25" y1="105" x2="78" y2="105"/><line x1="25" y1="45" x2="78" y2="45"/>
+      </g>
+      <g fill="#C00000"><text x="20" y="158">F₁</text><text x="20" y="98">F₂</text><text x="20" y="38">F₃</text></g>
+      <g fill="#333"><text x="200" y="200">k₁</text><text x="200" y="140">k₂</text><text x="200" y="80">k₃</text>
+        <text x="200" y="170" fill="#217346">u₁</text><text x="200" y="110" fill="#217346">u₂</text><text x="200" y="50" fill="#217346">u₃</text></g>
+    </svg>
+    <div class="cap">
+      Οι πλάκες θεωρούνται απαραμόρφωτες και κάθε όροφος έχει μία οριζόντια μετακίνηση u<sub>i</sub>. Η δυσκαμψία
+      ορόφου k<sub>i</sub> είναι το άθροισμα των δυσκαμψιών των υποστυλωμάτων του (π.χ. 12EI/h³ για
+      αμφίπακτο υποστύλωμα). Τα F<sub>i</sub> είναι οριζόντια φορτία, π.χ. σεισμικές δυνάμεις.
+    </div>
+  </div>
+  <p>Η ισορροπία των τριών πλακών γράφεται K·u = F, με μητρώο δυσκαμψίας:</p>
+  <table class="plain mat" style="margin:0 auto">
+    <tr><td rowspan="3" style="border:0">K =</td><td>k₁ + k₂</td><td>−k₂</td><td>0</td></tr>
+    <tr><td>−k₂</td><td>k₂ + k₃</td><td>−k₃</td></tr>
+    <tr><td>0</td><td>−k₃</td><td>k₃</td></tr>
+  </table>
+  <p>
+    Με k = (60 000; 50 000; 40 000) kN/m και F = (50; 100; 150) kN, στο Excel: τα στοιχεία του K είναι
+    τύποι από τα k (π.χ. <code>=C26+C27</code>) και η λύση
+  </p>
+  <p style="text-align:center"><code style="font-size:1.05em">=MMULT(MINVERSE(F26:H28);D26:D28)*1000</code> &nbsp;→&nbsp; u = (5,000 ; 10,000 ; 13,750) mm</p>
+  <p>
+    Το ×1000 μετατρέπει τα m σε mm (Μάθημα 5). <strong>Έλεγχος με το χέρι:</strong> η τέμνουσα κάθε ορόφου είναι
+    το άθροισμα των δυνάμεων από πάνω του (V<sub>3</sub> = 150, V<sub>2</sub> = 250, V<sub>1</sub> = 300 kN), η
+    σχετική μετακίνηση ορόφου Δ<sub>i</sub> = V<sub>i</sub>/k<sub>i</sub> και u<sub>i</sub> = ΣΔ. Οι δύο δρόμοι
+    δίνουν το ίδιο – αλλά μόνο ο δρόμος των μητρώων γενικεύεται σε οποιονδήποτε φορέα. Αυτή είναι η ιδέα της
+    <strong>μεθόδου άμεσης δυσκαμψίας</strong>, με την οποία δουλεύουν όλα τα προγράμματα στατικής ανάλυσης.
+  </p>
+
+  <h2>5. Παράδειγμα: δικτύωμα με τη μέθοδο των κόμβων</h2>
+  <div class="figure">
+    <svg viewBox="0 0 300 220" width="300" font-family="Calibri, Segoe UI, Arial" font-size="13">
+      <defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#C00000"/></marker></defs>
+      <g stroke="#333" stroke-width="3"><line x1="50" y1="170" x2="250" y2="170"/><line x1="50" y1="170" x2="150" y2="37"/><line x1="250" y1="170" x2="150" y2="37"/></g>
+      <g fill="#fff" stroke="#333" stroke-width="2"><circle cx="50" cy="170" r="5"/><circle cx="250" cy="170" r="5"/><circle cx="150" cy="37" r="5"/></g>
+      <path d="M50,175 L38,195 L62,195 z" fill="none" stroke="#333" stroke-width="2"/>
+      <circle cx="250" cy="185" r="8" fill="none" stroke="#333" stroke-width="2"/><line x1="232" y1="195" x2="268" y2="195" stroke="#333" stroke-width="2"/>
+      <g stroke="#C00000" stroke-width="2" marker-end="url(#ar2)"><line x1="150" y1="0" x2="150" y2="29"/><line x1="158" y1="37" x2="205" y2="37"/></g>
+      <g fill="#C00000"><text x="128" y="14">P</text><text x="208" y="33">H</text></g>
+      <g fill="#333"><text x="30" y="168">A</text><text x="262" y="168">B</text><text x="134" y="33">Γ</text>
+        <text x="140" y="188">L</text><text x="158" y="110">h</text></g>
+      <line x1="150" y1="42" x2="150" y2="170" stroke="#999" stroke-dasharray="4 3"/>
+    </svg>
+    <div class="cap">
+      Δικτύωμα με L = 6 m, h = 4 m: A άρθρωση, B κύλιση, φορτία P = 100 kN και H = 30 kN στον κόμβο Γ.
+      Άγνωστοι: οι αξονικές δυνάμεις των τριών ράβδων (εφελκυσμός θετικός) και οι τρεις αντιδράσεις.
+    </div>
+  </div>
+  <p>
+    Η μέθοδος των κόμβων δίνει δύο εξισώσεις ισορροπίας (ΣF<sub>x</sub> = 0, ΣF<sub>y</sub> = 0) ανά κόμβο: 3 κόμβοι →
+    6 εξισώσεις για 6 αγνώστους. Με c = cos θ = (L/2)/ℓ και s = sin θ = h/ℓ των λοξών ράβδων (ℓ = 5 m, c = 0,6,
+    s = 0,8), κάθε εξίσωση γίνεται μια γραμμή του μητρώου:
+  </p>
+  <table class="plain mat" style="margin:0 auto">
+    <tr><th></th><th>N<sub>AB</sub></th><th>N<sub>AΓ</sub></th><th>N<sub>BΓ</sub></th><th>A<sub>x</sub></th><th>A<sub>y</sub></th><th>B<sub>y</sub></th><th></th><th>δεξί μέλος</th></tr>
+    <tr><th>A: ΣF<sub>x</sub></th><td>1</td><td>c</td><td>0</td><td>1</td><td>0</td><td>0</td><td></td><td>0</td></tr>
+    <tr><th>A: ΣF<sub>y</sub></th><td>0</td><td>s</td><td>0</td><td>0</td><td>1</td><td>0</td><td></td><td>0</td></tr>
+    <tr><th>B: ΣF<sub>x</sub></th><td>−1</td><td>0</td><td>−c</td><td>0</td><td>0</td><td>0</td><td></td><td>0</td></tr>
+    <tr><th>B: ΣF<sub>y</sub></th><td>0</td><td>0</td><td>s</td><td>0</td><td>0</td><td>1</td><td></td><td>0</td></tr>
+    <tr><th>Γ: ΣF<sub>x</sub></th><td>0</td><td>−c</td><td>c</td><td>0</td><td>0</td><td>0</td><td></td><td>−H</td></tr>
+    <tr><th>Γ: ΣF<sub>y</sub></th><td>0</td><td>−s</td><td>−s</td><td>0</td><td>0</td><td>0</td><td></td><td>P</td></tr>
+  </table>
+  <p>
+    Στο Excel τα c και s είναι τύποι από τα L και h, και τα στοιχεία του μητρώου αναφέρονται σε αυτά
+    (<code>=$C$45</code>, <code>=-$C$46</code> κ.λπ.). Ένας τύπος λύνει και τις έξι εξισώσεις:
+  </p>
+  <p style="text-align:center"><code style="font-size:1.05em">=MMULT(MINVERSE(F41:K46);L41:L46)</code></p>
+  <table class="plain">
+    <tr><th>Άγνωστος</th><th>Τιμή (kN)</th><th>Είδος</th></tr>
+    <tr><td>N<sub>AB</sub></td><td>52,5</td><td>εφελκυσμός</td></tr>
+    <tr><td>N<sub>AΓ</sub></td><td>−37,5</td><td>θλίψη</td></tr>
+    <tr><td>N<sub>BΓ</sub></td><td>−87,5</td><td>θλίψη</td></tr>
+    <tr><td>A<sub>x</sub>, A<sub>y</sub>, B<sub>y</sub></td><td>−30 ; 30 ; 70</td><td>αντιδράσεις</td></tr>
+  </table>
+  <p>
+    Έλεγχος: A<sub>y</sub> + B<sub>y</sub> = 100 kN = P, A<sub>x</sub> = −H, και ροπές ως προς A:
+    B<sub>y</sub>·6 = 100·3 + 30·4 = 420 → B<sub>y</sub> = 70 kN ✔. Η στήλη «Είδος» βγαίνει με
+    <code>IF</code> (Μάθημα 7). Αλλάξτε τη γεωμετρία ή τα φορτία στο αρχείο: η λύση ενημερώνεται αμέσως,
+    χωρίς να ξαναλύσετε τίποτα.
+  </p>
+
+  <h2>6. Δοκιμάστε μόνοι σας</h2>
+  <p>
+    <a class="download" href="../files/11-matrices.xlsx" download>⬇ Λήψη 11-matrices.xlsx</a>
+  </p>
+  <ol class="steps">
+    <li>Στο φύλλο <strong>Παράδειγμα</strong> δείτε τους τύπους πίνακα (Α), το πλαίσιο (Β) και το δικτύωμα (Γ).
+      Αλλάξτε τα k και τα F του πλαισίου, και τα L, h, P, H του δικτυώματος.</li>
+    <li>Στο φύλλο <strong>Άσκηση</strong>:
+      <ul>
+        <li><strong>Α.</strong> Λύστε ένα σύστημα 3×3 και ελέγξτε τη λύση με <code>MMULT</code>.</li>
+        <li><strong>Β.</strong> Συντάξτε το K τριώροφου πλαισίου από τα k και λύστε K·u = F.</li>
+        <li><strong>Γ.</strong> Λύστε το δικτύωμα του Παραδείγματος με άλλη γεωμετρία και φορτία.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h2>Σύνοψη</h2>
+  <table class="plain">
+    <tr><th>Θέλω…</th><th>Τύπος</th></tr>
+    <tr><td>γινόμενο μητρώων</td><td><code>MMULT(A;B)</code></td></tr>
+    <tr><td>αντίστροφο / ορίζουσα / ανάστροφο</td><td><code>MINVERSE(A)</code> / <code>MDETERM(A)</code> / <code>TRANSPOSE(A)</code></td></tr>
+    <tr><td>λύση του A·x = b</td><td><code>=MMULT(MINVERSE(A);b)</code></td></tr>
+    <tr><td>έλεγχο της λύσης</td><td><code>=MMULT(A;x)-b</code> ≈ 0</td></tr>
+    <tr><td>τύπο με πολλά κελιά (παλιό Excel)</td><td>επιλογή περιοχής → τύπος → <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Enter</kbd></td></tr>
+  </table>
+
+  <div class="note" style="margin-top:2em">
+    <strong>Τέλος της σειράς.</strong> Με τα έντεκα μαθήματα έχετε τα εργαλεία για τα περισσότερα φύλλα
+    υπολογισμών που θα χρειαστείτε στις σπουδές σας. Ο καλύτερος τρόπος να τα εμπεδώσετε: την επόμενη φορά που
+    θα λύσετε μια άσκηση Στατικής ή Αντοχής με το χέρι, ελέγξτε τη λύση σας και με ένα φύλλο Excel.
+  </div>
+
+  <div class="pager"></div>
+</main>
+<script src="../assets/js/site.js"></script>
+</body>
+</html>
