@@ -7,7 +7,7 @@ const LESSONS = [
   { file: "02-formulas.html", title: "Τύποι και αριθμητικές πράξεις", ready: true },
   { file: "03-references.html", title: "Σχετικές και απόλυτες αναφορές", ready: true },
   { file: "04-functions.html", title: "Βασικές συναρτήσεις (SUM, AVERAGE, …)", ready: true },
-  { file: "05-formatting.html", title: "Μορφοποίηση αριθμών και μονάδες" },
+  { file: "05-formatting.html", title: "Μορφοποίηση αριθμών και μονάδες", ready: true },
   { file: "06-charts.html", title: "Διαγράμματα (διασπορά XY)" },
   { file: "07-if.html", title: "Λογικοί έλεγχοι: IF, AND, OR" },
   { file: "08-lookup.html", title: "Πίνακες αναζήτησης (XLOOKUP)" },
@@ -94,6 +94,8 @@ const GUIDES = [
 // ---------- Mock spreadsheet ----------
 // Usage: <div class="xl" data-sheet='{"cols":4,"rows":5,"cells":{"A1":{"v":"Beam","hdr":1}, "C2":{"v":0.15,"f":"=A2*B2"}}}'></div>
 // Each cell: v = value, f = formula (optional), d = decimals shown (optional), hdr = header style.
+// r = right-align a text value (e.g. a formatted number "20,25 kNm"; put the raw value in f).
+// bg / color = cell fill and text colour (e.g. to show conditional formatting).
 // Numbers are shown with a decimal comma, as in Excel with Greek regional settings.
 const fmtNum = (v, d) =>
   typeof v !== "number" ? v ?? ""
@@ -111,11 +113,12 @@ document.querySelectorAll(".xl[data-sheet]").forEach((box) => {
     for (const c of letters) {
       const cell = sheet.cells[c + r] || {};
       const cls = [
-        typeof cell.v === "number" ? "num" : "",
+        typeof cell.v === "number" || cell.r ? "num" : "",
         cell.hdr ? "hdr" : "",
         cell.f ? "formula" : "",
       ].join(" ").trim();
-      html += `<td data-ref="${c}${r}" class="${cls}">${fmtNum(cell.v, cell.d)}</td>`;
+      const style = cell.bg ? ` style="background:${cell.bg};color:${cell.color ?? "inherit"}"` : "";
+      html += `<td data-ref="${c}${r}" class="${cls}"${style}>${fmtNum(cell.v, cell.d)}</td>`;
     }
     html += "</tr>";
   }
