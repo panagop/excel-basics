@@ -10,6 +10,7 @@ The unknowns are stored with a starting guess; the student runs Goal Seek to sol
 from openpyxl import Workbook
 from openpyxl.chart import Reference, ScatterChart, Series
 from openpyxl.styles import Font, PatternFill
+from openpyxl.worksheet.datavalidation import DataValidation
 
 from xlhelpers import (BOX, FORMULA_FILL, as_text, input_cell, note, save, section, title, widths)
 
@@ -58,6 +59,21 @@ def legend(ws, row):
         elif font:
             c.font = Font(bold=True)
 
+
+
+def add_acc_choice(ws, target, row, col):
+    """Drop-down list for α_cc in `target`, fed by a small list of options at (row, col)."""
+    ws.cell(row, col, "Επιλογές α_cc").font = Font(bold=True)
+    for r, (val, text) in enumerate([(0.85, "ελληνικό Εθνικό Προσάρτημα"), (1.00, "συνιστώμενη τιμή EN 1992-1-1")],
+                                    start=row + 1):
+        c = ws.cell(r, col, val)
+        c.number_format = "0.00"
+        c.border = BOX
+        ws.cell(r, col + 1, text)
+    ref = f"${ws.cell(row + 1, col).column_letter}${row + 1}:${ws.cell(row + 2, col).column_letter}${row + 2}"
+    dv = DataValidation(type="list", formula1=ref, allow_blank=False)
+    ws.add_data_validation(dv)
+    dv.add(target)
 
 wb = Workbook()
 
@@ -126,7 +142,7 @@ block(ws, 33, [
     ("Στατικό ύψος", "d", 0.55, "m", "in", "0.00"),
     ("Οπλισμός (4Φ20)", "As", 12.57, "cm²", "in", "0.00"),
     ("Χαρακτηριστική αντοχή σκυροδέματος", "f_ck", 25, "MPa", "in", "0"),
-    ("Συντελεστής α_cc (συνιστώμενη τιμή EC2)", "α_cc", 1.00, "–", "in", "0.00"),
+    ("Συντελεστής α_cc (επιλογή από λίστα)", "α_cc", 0.85, "–", "in", "0.00"),
     ("Χαρακτηριστικό όριο διαρροής χάλυβα", "f_yk", 500, "MPa", "in", "0"),
     ("Μέτρο ελαστικότητας χάλυβα", "E_s", 200000, "MPa", "in", "0"),
     ("Οριακή βράχυνση σκυροδέματος", "ε_cu", 0.0035, "–", "in", "0.0000"),
@@ -143,9 +159,10 @@ block(ws, 33, [
     ("Ροπή αντοχής M_Rd = F_s·(d − λ·x/2)", "M_Rd", "=D49*(D34-D41*D45/2)", "kNm", "f", "0.00"),
     ("Ισορροπία F_c − F_s", "ΔF", "=D48-D49", "kN", "t", "0.000"),
 ])
-note(ws, 54, "Λύση: x = 0,1366 m, ο χάλυβας διαρρέει, M_Rd = 270,7 kNm.")
+note(ws, 54, "Λύση με α_cc = 0,85: x = 0,1607 m, ο χάλυβας διαρρέει, M_Rd = 265,4 kNm.   Με α_cc = 1,00: x = 0,1366 m, M_Rd = 270,7 kNm.")
 note(ws, 55, "Αφού ο χάλυβας διαρρέει, υπάρχει και αναλυτική λύση x = As·f_yd/(λ·b·f_cd) – ελέγξτε την!")
 note(ws, 56, "Μην ξεκινάτε από x = 0: το ε_s = ε_cu·(d − x)/x δίνει διαίρεση με μηδέν.")
+add_acc_choice(ws, "D37", 37, 8)
 widths(ws, A=44, B=10, C=4, D=13, E=11, F=34, H=8, I=12)
 
 # ================= Exercise sheet =================
@@ -209,7 +226,7 @@ for c in ("D29", "E29"):
 rows = [
     ("Πλάτος", "b", 0.25, "in", "0.00"), ("Στατικό ύψος", "d", 0.45, "in", "0.00"),
     ("Οπλισμός", "As (cm²)", (29.45, 9.42), "in", "0.00"), ("f_ck (MPa)", "", 20, "in", "0"),
-    ("α_cc", "", 1.00, "in", "0.00"), ("f_yk (MPa)", "", 500, "in", "0"), ("E_s (MPa)", "", 200000, "in", "0"),
+    ("α_cc (λίστα)", "", 0.85, "in", "0.00"), ("f_yk (MPa)", "", 500, "in", "0"), ("E_s (MPa)", "", 200000, "in", "0"),
     ("ε_cu", "", 0.0035, "in", "0.0000"), ("λ", "", 0.8, "in", "0.00"),
     ("f_cd (MPa)", "", None, "f", "0.00"), ("f_yd (MPa)", "", None, "f", "0.00"), ("ε_yd", "", None, "f", "0.00000"),
     ("x (m) – ΑΓΝΩΣΤΟΣ", "", 0.10, "x", "0.0000"),
@@ -237,8 +254,10 @@ for r, (label, sym, val, kind, fmt) in enumerate(rows, start=30):
             c.fill = FORMULA_FILL
             if kind == "t":
                 c.font = TARGET_FONT
-note(ex, 50, "Έλεγχος: 6Φ25 → x = 0,3187 m, ο χάλυβας ΔΕΝ διαρρέει, M_Rd = 274,1 kNm.   3Φ20 → x = 0,1536 m, M_Rd = 159,1 kNm.")
+note(ex, 50, "Έλεγχος (α_cc = 0,85): 6Φ25 → x = 0,3302 m, ο χάλυβας ΔΕΝ διαρρέει, M_Rd = 237,9 kNm.   3Φ20 → x = 0,1807 m, M_Rd = 154,7 kNm.")
+note(ex, 52, "Με α_cc = 1,00: 6Φ25 → x = 0,3187 m, M_Rd = 274,1 kNm.   3Φ20 → x = 0,1536 m, M_Rd = 159,1 kNm.")
 note(ex, 51, "Ερώτηση: τριπλασιάσαμε σχεδόν τον οπλισμό· γιατί η ροπή αντοχής αυξήθηκε μόνο κατά ~70%;")
+add_acc_choice(ex, "D34:E34", 30, 7)
 widths(ex, A=40, B=10, C=4, D=13, E=13, F=12)
 
 save(wb, "10-goal-seek.xlsx")
