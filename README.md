@@ -8,6 +8,7 @@ https://panagop.github.io/excel-basics/
 
 - `index.html` – αρχική σελίδα
 - `lessons/` – μία σελίδα ανά μάθημα
+- `guides/` – οδηγοί εκτός σειράς μαθημάτων (π.χ. τοπικές ρυθμίσεις)
 - `files/` – αρχεία .xlsx παραδειγμάτων/ασκήσεων
 - `assets/js/site.js` – λίστα μαθημάτων (μενού, κουμπιά Προηγούμενο/Επόμενο) και διαδραστικό φύλλο
 - `tools/` – scripts που δημιουργούν τα .xlsx, π.χ. `uv run tools/make_02_formulas.py`
@@ -16,4 +17,5 @@ https://panagop.github.io/excel-basics/
 
 1. Δημιουργήστε `lessons/NN-name.html` (αντιγράψτε ένα υπάρχον).
 2. Ορίστε `ready: true` στην αντίστοιχη γραμμή του `LESSONS` στο `assets/js/site.js`.
-3. Προαιρετικά: `tools/make_NN_name.py` για το αρχείο .xlsx.
+3. Για οδηγό: `guides/name.html` και μια γραμμή στο `GUIDES` του `site.js`.
+4. Προαιρετικά: `tools/make_NN_name.py` για το αρχείο .xlsx.

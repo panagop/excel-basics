@@ -1,11 +1,12 @@
 // Excel για Πολιτικούς Μηχανικούς – κοινή πλοήγηση και διαδραστικό υπολογιστικό φύλλο.
 // Νέο μάθημα: δημιουργήστε lessons/NN-name.html και ορίστε `ready: true` παρακάτω.
+// Νέος οδηγός (σελίδα εκτός σειράς μαθημάτων): guides/name.html και μια γραμμή στο GUIDES.
 
 const LESSONS = [
   { file: "01-first-steps.html", title: "Πρώτα βήματα: το περιβάλλον του Excel", ready: true },
   { file: "02-formulas.html", title: "Τύποι και αριθμητικές πράξεις", ready: true },
   { file: "03-references.html", title: "Σχετικές και απόλυτες αναφορές", ready: true },
-  { file: "04-functions.html", title: "Βασικές συναρτήσεις (SUM, AVERAGE, …)" },
+  { file: "04-functions.html", title: "Βασικές συναρτήσεις (SUM, AVERAGE, …)", ready: true },
   { file: "05-formatting.html", title: "Μορφοποίηση αριθμών και μονάδες" },
   { file: "06-charts.html", title: "Διαγράμματα (διασπορά XY)" },
   { file: "07-if.html", title: "Λογικοί έλεγχοι: IF, AND, OR" },
@@ -15,9 +16,13 @@ const LESSONS = [
   { file: "11-matrices.html", title: "Μητρώα και γραμμικά συστήματα" },
 ];
 
+const GUIDES = [
+  { file: "regional-settings.html", title: "Τοπικές ρυθμίσεις: τελεία ή κόμμα;" },
+];
+
 (function buildLayout() {
-  const inLessons = location.pathname.includes("/lessons/");
-  const root = inLessons ? "../" : "";
+  const inSubfolder = /\/(lessons|guides)\//.test(location.pathname);
+  const root = inSubfolder ? "../" : "";
   const current = location.pathname.split("/").pop();
 
   // Header
@@ -38,12 +43,17 @@ const LESSONS = [
     const active = l.file === current ? ' class="active"' : "";
     return `<li><a href="${root}lessons/${l.file}"${active}><span class="num">${n}</span>${l.title}</a></li>`;
   }).join("");
+  const guideItems = GUIDES.map((g) => {
+    const active = g.file === current ? ' class="active"' : "";
+    return `<li><a href="${root}guides/${g.file}"${active}><span class="num">ⓘ</span>${g.title}</a></li>`;
+  }).join("");
   const nav = document.createElement("nav");
   nav.className = "sidebar";
   nav.innerHTML = `
     <ol><li><a href="${root}index.html"${current === "index.html" || current === "" ? ' class="active"' : ""}>
       <span class="num">⌂</span>Αρχική</a></li></ol>
-    <h2>Μαθήματα</h2><ol>${items}</ol>`;
+    <h2>Μαθήματα</h2><ol>${items}</ol>
+    <h2>Οδηγοί</h2><ol>${guideItems}</ol>`;
   header.after(nav);
 
   header.querySelector(".menu-btn").addEventListener("click", () =>
@@ -73,6 +83,11 @@ const LESSONS = [
         ? `<a class="card" href="lessons/${l.file}"><span class="num">Μάθημα ${n}</span><h3>${l.title}</h3></a>`
         : `<div class="card disabled"><span class="num">Μάθημα ${n}</span><h3>${l.title}</h3><p>Σύντομα διαθέσιμο</p></div>`;
     }).join("");
+  }
+  const guideCards = document.querySelector(".guide-cards");
+  if (guideCards) {
+    guideCards.innerHTML = GUIDES.map((g) =>
+      `<a class="card" href="guides/${g.file}"><span class="num">Οδηγός</span><h3>${g.title}</h3></a>`).join("");
   }
 })();
 
