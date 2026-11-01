@@ -18,6 +18,10 @@ const LESSONS = [
   { file: "13-macros.html", title: "Μακροεντολές: σύντομη εισαγωγή", ready: true },
 ];
 
+// Υπογραφή στο υποσέλιδο κάθε σελίδας.
+const AUTHOR = "";
+const YEAR = "2026";
+
 const GUIDES = [
   { file: "regional-settings.html", title: "Τοπικές ρυθμίσεις: τελεία ή κόμμα;" },
 ];
@@ -74,6 +78,20 @@ const GUIDES = [
       (prev ? `<a class="prev" href="${prev.file}"><small>← Προηγούμενο</small>${prev.title}</a>`
             : `<a class="prev" href="../index.html"><small>← Επιστροφή</small>Αρχική</a>`) +
       (next && next.ready ? `<a class="next" href="${next.file}"><small>Επόμενο →</small>${next.title}</a>` : "");
+  }
+
+  // Footer with the logos of the University and the Department, author and year
+  const main = document.querySelector("main");
+  if (main) {
+    const footer = document.createElement("footer");
+    footer.className = "site-footer";
+    footer.innerHTML = `
+      <a href="https://www.ihu.gr/" target="_blank" rel="noopener"><img src="${root}assets/img/ihu-logo.png"
+        alt="Διεθνές Πανεπιστήμιο της Ελλάδος" height="44"></a>
+      <a href="https://civil.ihu.gr/" target="_blank" rel="noopener"><img src="${root}assets/img/civil-ihu-logo.png"
+        alt="Τμήμα Πολιτικών Μηχανικών ΔιΠΑΕ" height="44"></a>
+      <span class="sign">${[AUTHOR, YEAR].filter(Boolean).join(" · ")}</span>`;
+    main.append(footer);
   }
 
   // Home page lesson cards

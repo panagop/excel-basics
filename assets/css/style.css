@@ -211,3 +211,14 @@ a.card:hover { border-color: var(--green); box-shadow: 0 2px 8px rgba(0,0,0,.08)
 .chart-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .chart-pair .xychart { margin: 0; }
 @media (max-width: 860px) { .chart-pair { grid-template-columns: 1fr; } }
+
+/* ---------- Footer and logos ---------- */
+.site-footer {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px;
+  margin-top: 3em; padding-top: 1.2em; border-top: 1px solid var(--border);
+}
+.site-footer img { display: block; height: 44px; width: auto; }
+.site-footer .sign { margin-left: auto; color: var(--muted); font-size: .95rem; }
+.brand { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; margin-bottom: 1.4em; }
+.brand img { display: block; height: 64px; width: auto; }
+@media (max-width: 860px) { .site-footer .sign { margin-left: 0; width: 100%; } .brand img { height: 52px; } }

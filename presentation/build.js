@@ -10,6 +10,21 @@ const { applyTheme } = require(
 
 const OUT = process.argv[2] || "excel-civil.pptx";
 const SITE = "panagop.github.io/excel-basics";
+const AUTHOR = "";
+const YEAR = "2026";
+const SIGN = [AUTHOR, YEAR].filter(Boolean).join(" · ");
+const LOGO_DIR = process.env.LOGO_DIR || "/home/user/excel-basics/assets/img";
+const IHU = { path: `${LOGO_DIR}/ihu-logo.png`, ratio: 265 / 75 };
+const CIVIL = { path: `${LOGO_DIR}/civil-ihu-logo.png`, ratio: 176 / 90 };
+// Logos on a white panel (they are dark, the title slides are green)
+function logoPanel(x, y, h) {
+  const gap = 0.35, pad = 0.25, wI = h * IHU.ratio, wC = h * CIVIL.ratio;
+  return [
+    { rect: { x, y, w: wI + wC + gap + 2 * pad, h: h + 2 * pad, fill: { color: "FFFFFF" }, rectRadius: 0.1 } },
+    { image: { x: x + pad, y: y + pad, w: wI, h, path: IHU.path } },
+    { image: { x: x + pad + wI + gap, y: y + pad, w: wC, h, path: CIVIL.path } },
+  ];
+}
 
 const THEME = {
   name: "Excel Civil",
@@ -36,6 +51,7 @@ pres.defineSlideMaster({
   title: "TITLE",
   background: { color: C.text2 },
   objects: [
+    ...logoPanel(0.8, 0.6, 0.8),
     { placeholder: { options: { name: "title", type: "title", x: 0.8, y: 2.2, w: 11.7, h: 1.5, fontSize: 44, bold: true,
       color: C.background1, valign: "bottom" }, text: "" } },
     { placeholder: { options: { name: "body", type: "body", x: 0.8, y: 3.9, w: 11.7, h: 1.4, fontSize: 20,
@@ -59,8 +75,10 @@ pres.defineSlideMaster({
   objects: [
     { placeholder: { options: { name: "title", type: "title", x: 0.6, y: 0.35, w: 10.9, h: 0.9, fontSize: 32, bold: true,
       color: C.text2, valign: "middle", align: "left", margin: 0 }, text: "" } },
-    { text: { text: "Excel για Πολιτικούς Μηχανικούς", options: { x: 0.6, y: 6.95, w: 6, h: 0.35, fontSize: 11,
-      color: C.accent5, margin: 0 } } },
+    { text: { text: ["Excel για Πολιτικούς Μηχανικούς", SIGN].join(" · "), options: { x: 0.6, y: 6.95, w: 6, h: 0.35,
+      fontSize: 11, color: C.accent5, margin: 0 } } },
+    { image: { x: 10.25, y: 6.93, w: 0.36 * IHU.ratio, h: 0.36, path: IHU.path } },
+    { image: { x: 11.55, y: 6.93, w: 0.36 * CIVIL.ratio, h: 0.36, path: CIVIL.path } },
   ],
   slideNumber: { x: 12.3, y: 6.95, w: 0.6, h: 0.35, fontSize: 11, color: C.accent5, align: "right" },
 });
@@ -169,6 +187,7 @@ const chartText = { catAxisLabelFontFace: "+mn-lt", valAxisLabelFontFace: "+mn-l
     const s = pres.addSlide({ masterName: "TITLE", sectionTitle });
     s.addText("Excel για Πολιτικούς Μηχανικούς", { placeholder: "title" });
     s.addText([{ text: "Από το πρώτο κελί ως τις μακροεντολές", options: { breakLine: true } },
+               { text: SIGN, options: { fontSize: 18, breakLine: true } },
                { text: SITE, options: { fontSize: 16 } }], { placeholder: "body" });
     s.addNotes("Καλωσόρισμα (1 λεπτό). Η διάλεξη είναι μια περιήγηση στα 13 μαθήματα του site. Δεν θα δούμε κάθε κουμπί – " +
       "στόχος είναι να ξέρετε τι μπορεί να κάνει το Excel για έναν μηχανικό και πού θα βρείτε τις λεπτομέρειες. " +
