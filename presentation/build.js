@@ -10,9 +10,9 @@ const { applyTheme } = require(
 
 const OUT = process.argv[2] || "excel-civil.pptx";
 const SITE = "panagop.github.io/excel-basics";
-const AUTHOR = "";
+const AUTHOR = "Γιώργος Παναγόπουλος";
 const YEAR = "2026";
-const SIGN = [AUTHOR, YEAR].filter(Boolean).join(" · ");
+const SIGN = [AUTHOR, YEAR].filter(Boolean).join(", ");
 const LOGO_DIR = process.env.LOGO_DIR || "/home/user/excel-basics/assets/img";
 const IHU = { path: `${LOGO_DIR}/ihu-logo.png`, ratio: 265 / 75 };
 const CIVIL = { path: `${LOGO_DIR}/civil-ihu-logo.png`, ratio: 176 / 90 };
@@ -75,8 +75,10 @@ pres.defineSlideMaster({
   objects: [
     { placeholder: { options: { name: "title", type: "title", x: 0.6, y: 0.35, w: 10.9, h: 0.9, fontSize: 32, bold: true,
       color: C.text2, valign: "middle", align: "left", margin: 0 }, text: "" } },
-    { text: { text: ["Excel για Πολιτικούς Μηχανικούς", SIGN].join(" · "), options: { x: 0.6, y: 6.95, w: 6, h: 0.35,
+    { text: { text: "Excel για Πολιτικούς Μηχανικούς", options: { x: 0.6, y: 6.95, w: 6, h: 0.35,
       fontSize: 11, color: C.accent5, margin: 0 } } },
+    { text: { text: SIGN, options: { x: 6.85, y: 6.95, w: 3.2, h: 0.35, fontSize: 11, color: C.accent5, align: "right",
+      margin: 0 } } },
     { image: { x: 10.25, y: 6.93, w: 0.36 * IHU.ratio, h: 0.36, path: IHU.path } },
     { image: { x: 11.55, y: 6.93, w: 0.36 * CIVIL.ratio, h: 0.36, path: CIVIL.path } },
   ],

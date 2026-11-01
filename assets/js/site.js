@@ -19,7 +19,7 @@ const LESSONS = [
 ];
 
 // Υπογραφή στο υποσέλιδο κάθε σελίδας.
-const AUTHOR = "";
+const AUTHOR = "Γιώργος Παναγόπουλος";
 const YEAR = "2026";
 
 const GUIDES = [
@@ -90,7 +90,7 @@ const GUIDES = [
         alt="Διεθνές Πανεπιστήμιο της Ελλάδος" height="44"></a>
       <a href="https://civil.ihu.gr/" target="_blank" rel="noopener"><img src="${root}assets/img/civil-ihu-logo.png"
         alt="Τμήμα Πολιτικών Μηχανικών ΔιΠΑΕ" height="44"></a>
-      <span class="sign">${[AUTHOR, YEAR].filter(Boolean).join(" · ")}</span>`;
+      <span class="sign">${[AUTHOR, YEAR].filter(Boolean).join(", ")}</span>`;
     main.append(footer);
   }
 
