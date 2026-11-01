@@ -1,4 +1,4 @@
-// Excel για Πολιτικούς Μηχανικούς – παρουσίαση ~60 λεπτών βασισμένη στο site.
+// Εισαγωγή στο Excel για Πολιτικούς Μηχανικούς – παρουσίαση ~60 λεπτών βασισμένη στο site.
 const pptxgen = require("pptxgenjs");
 const React = require("react");
 const ReactDOMServer = require("react-dom/server");
@@ -40,7 +40,7 @@ const HEX = THEME.colors;
 
 const pres = new pptxgen();
 pres.layout = "LAYOUT_WIDE"; // 13.333 × 7.5 in
-pres.title = "Excel για Πολιτικούς Μηχανικούς";
+pres.title = "Εισαγωγή στο Excel για Πολιτικούς Μηχανικούς";
 pres.author = "Τμήμα Πολιτικών Μηχανικών";
 pres.theme = { headFontFace: THEME.headFontFace, bodyFontFace: THEME.bodyFontFace };
 const C = pres.SchemeColor;
@@ -52,8 +52,8 @@ pres.defineSlideMaster({
   background: { color: C.text2 },
   objects: [
     ...logoPanel(0.8, 0.6, 0.8),
-    { placeholder: { options: { name: "title", type: "title", x: 0.8, y: 2.2, w: 11.7, h: 1.5, fontSize: 44, bold: true,
-      color: C.background1, valign: "bottom" }, text: "" } },
+    { placeholder: { options: { name: "title", type: "title", x: 0.8, y: 2.1, w: 11.7, h: 1.65, fontSize: 40, bold: true,
+      color: C.background1, valign: "bottom", align: "left" }, text: "" } },
     { placeholder: { options: { name: "body", type: "body", x: 0.8, y: 3.9, w: 11.7, h: 1.4, fontSize: 20,
       color: C.background2, valign: "top" }, text: "" } },
   ],
@@ -63,7 +63,7 @@ pres.defineSlideMaster({
   background: { color: C.accent1 },
   objects: [
     { placeholder: { options: { name: "title", type: "title", x: 0.8, y: 2.6, w: 11.7, h: 1.2, fontSize: 40, bold: true,
-      color: C.background1, valign: "bottom" }, text: "" } },
+      color: C.background1, valign: "bottom", align: "left" }, text: "" } },
     { placeholder: { options: { name: "body", type: "body", x: 0.8, y: 3.95, w: 11.7, h: 1.2, fontSize: 20,
       color: C.background2, valign: "top" }, text: "" } },
   ],
@@ -75,7 +75,7 @@ pres.defineSlideMaster({
   objects: [
     { placeholder: { options: { name: "title", type: "title", x: 0.6, y: 0.35, w: 10.9, h: 0.9, fontSize: 32, bold: true,
       color: C.text2, valign: "middle", align: "left", margin: 0 }, text: "" } },
-    { text: { text: "Excel για Πολιτικούς Μηχανικούς", options: { x: 0.6, y: 6.95, w: 6, h: 0.35,
+    { text: { text: "Εισαγωγή στο Excel για Πολιτικούς Μηχανικούς", options: { x: 0.6, y: 6.95, w: 6, h: 0.35,
       fontSize: 11, color: C.accent5, margin: 0 } } },
     { text: { text: SIGN, options: { x: 6.85, y: 6.95, w: 3.2, h: 0.35, fontSize: 11, color: C.accent5, align: "right",
       margin: 0 } } },
@@ -187,7 +187,8 @@ const chartText = { catAxisLabelFontFace: "+mn-lt", valAxisLabelFontFace: "+mn-l
   section("Εισαγωγή");
   {
     const s = pres.addSlide({ masterName: "TITLE", sectionTitle });
-    s.addText("Excel για Πολιτικούς Μηχανικούς", { placeholder: "title" });
+    s.addText([{ text: "Εισαγωγή στο Excel", options: { breakLine: true } }, { text: "για Πολιτικούς Μηχανικούς" }],
+      { placeholder: "title" });
     s.addText([{ text: "Από το πρώτο κελί ως τις μακροεντολές", options: { breakLine: true } },
                { text: SIGN, options: { fontSize: 18, breakLine: true } },
                { text: SITE, options: { fontSize: 16 } }], { placeholder: "body" });

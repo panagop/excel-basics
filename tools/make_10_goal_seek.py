@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["openpyxl"]
+# dependencies = ["openpyxl", "pillow"]
 # ///
 """Builds files/10-goal-seek.xlsx.  Run with:  uv run tools/make_10_goal_seek.py
 

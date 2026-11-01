@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["openpyxl"]
+# dependencies = ["openpyxl", "pillow"]
 # ///
 """Builds files/12-more-charts.xlsx.  Run with:  uv run tools/make_12_more_charts.py"""
 

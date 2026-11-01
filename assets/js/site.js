@@ -1,4 +1,4 @@
-// Excel για Πολιτικούς Μηχανικούς – κοινή πλοήγηση και διαδραστικό υπολογιστικό φύλλο.
+// Εισαγωγή στο Excel για Πολιτικούς Μηχανικούς – κοινή πλοήγηση και διαδραστικό υπολογιστικό φύλλο.
 // Νέο μάθημα: δημιουργήστε lessons/NN-name.html και ορίστε `ready: true` παρακάτω.
 // Νέος οδηγός (σελίδα εκτός σειράς μαθημάτων): guides/name.html και μια γραμμή στο GUIDES.
 
@@ -37,7 +37,7 @@ const GUIDES = [
   header.innerHTML = `
     <button class="menu-btn" aria-label="Εμφάνιση μαθημάτων">☰</button>
     <span class="logo">X</span>
-    <a href="${root}index.html">Excel για Πολιτικούς Μηχανικούς</a>`;
+    <a href="${root}index.html">Εισαγωγή στο Excel για Πολιτικούς Μηχανικούς</a>`;
   document.body.prepend(header);
 
   // Sidebar

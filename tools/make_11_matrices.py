@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["openpyxl"]
+# dependencies = ["openpyxl", "pillow"]
 # ///
 """Builds files/11-matrices.xlsx.  Run with:  uv run tools/make_11_matrices.py
 

@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["openpyxl"]
+# dependencies = ["openpyxl", "pillow"]
 # ///
 """Builds files/09-sort-filter.xlsx.  Run with:  uv run tools/make_09_sort_filter.py"""
 

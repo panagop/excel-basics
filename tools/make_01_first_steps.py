@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["openpyxl"]
+# dependencies = ["openpyxl", "pillow"]
 # ///
 """Builds files/01-first-steps.xlsx.  Run with:  uv run tools/make_01_first_steps.py"""
 
