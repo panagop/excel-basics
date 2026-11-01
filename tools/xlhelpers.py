@@ -38,7 +38,7 @@ def logos(ws):
 
 
 def title(ws, text, subtitle=None, row=1):
-    c = ws.cell(row, 1, text)
+    c = text_cell(ws, row, 1, text)
     c.font = Font(bold=True, size=14, color=GREEN)
     if row == 1:
         ws.logos_end = logos(ws)  # the title is moved right of the logos in save(), once column widths are known
@@ -48,12 +48,22 @@ def title(ws, text, subtitle=None, row=1):
         note(ws, row + 1, subtitle)
 
 
+def text_cell(ws, row, col, text):
+    """Write a label; text that starts with "=" is kept as text, not stored as a formula."""
+    c = ws.cell(row, col)
+    if isinstance(text, str) and text.startswith("="):
+        as_text(c, text)
+    else:
+        c.value = text
+    return c
+
+
 def section(ws, row, text):
-    ws.cell(row, 1, text).font = Font(bold=True, size=12, color=GREEN)
+    text_cell(ws, row, 1, text).font = Font(bold=True, size=12, color=GREEN)
 
 
 def note(ws, row, text, col=1):
-    ws.cell(row, col, text).font = Font(italic=True, color="595959")
+    text_cell(ws, row, col, text).font = Font(italic=True, color="595959")
 
 
 def as_text(cell, text):

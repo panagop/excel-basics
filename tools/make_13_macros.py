@@ -40,7 +40,7 @@ widths(ws, A=10, B=13, C=13, D=14, E=14)
 fs = wb.create_sheet("Συναρτήσεις")
 title(fs, "Μάθημα 13 – Β. Δικές σας συναρτήσεις",
       "Αφού προσθέσετε τον κώδικα σε Λειτουργική μονάδα (Module), χρησιμοποιήστε τις συναρτήσεις στα κίτρινα κελιά.")
-section(fs, 4, "=BAR_AREA(n; Φ) → εμβαδόν n ράβδων διαμέτρου Φ (mm), σε cm²")
+section(fs, 4, "Συνάρτηση BAR_AREA(n; Φ) → εμβαδόν n ράβδων διαμέτρου Φ (mm), σε cm²")
 for j, h in enumerate(["n", "Φ (mm)", "As (cm²)"], start=1):
     fs.cell(5, j, h).font = Font(bold=True)
 for i, (n, d) in enumerate([(4, 16), (3, 20), (2, 12), (5, 25)], start=6):
@@ -48,7 +48,7 @@ for i, (n, d) in enumerate([(4, 16), (3, 20), (2, 12), (5, 25)], start=6):
     fs.cell(i, 2, d).border = BOX
     input_cell(fs.cell(i, 3), "0.00")
 note(fs, 10, "Έλεγχος: 4Φ16 → 8,04 cm²,  3Φ20 → 9,42 cm².")
-section(fs, 13, "=FCD(f_ck; α_cc) → αντοχή σχεδιασμού σκυροδέματος f_cd = α_cc·f_ck/1,5 (MPa)")
+section(fs, 13, "Συνάρτηση FCD_DESIGN(f_ck; α_cc) → αντοχή σχεδιασμού σκυροδέματος f_cd = α_cc·f_ck/1,5 (MPa)")
 for j, h in enumerate(["f_ck (MPa)", "α_cc", "f_cd (MPa)"], start=1):
     fs.cell(14, j, h).font = Font(bold=True)
 for i, (fck, acc) in enumerate([(20, 0.85), (25, 0.85), (30, 1.00)], start=15):
