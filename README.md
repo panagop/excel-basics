@@ -12,6 +12,7 @@ https://panagop.github.io/excel-basics/
 - `files/` – αρχεία .xlsx παραδειγμάτων/ασκήσεων
 - `assets/js/site.js` – λίστα μαθημάτων (μενού, κουμπιά Προηγούμενο/Επόμενο) και διαδραστικό φύλλο
 - `tools/` – scripts που δημιουργούν τα .xlsx, π.χ. `uv run tools/make_02_formulas.py`
+- `tools/make_ods.py` – δημιουργεί τα αντίστοιχα .ods για το LibreOffice από τα .xlsx (χρειάζεται εγκατεστημένο LibreOffice): `uv run tools/make_ods.py`
 
 ## Νέο μάθημα
 
